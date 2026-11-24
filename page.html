@@ -1,0 +1,929 @@
+<title>Fucking Magnets</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Creepster&family=Atkinson+Hyperlegible:wght@400;700&family=Mitr:wght@500;600&family=Sarabun:wght@400;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: a Dark Carnival midway at night. The sky is fixed: a horseshoe magnet for a moon, iron filings for stars, big tops and a ferris wheel. Booths (toy boxes ringed in chasing bulbs) sit on night-black bands under striped awnings; between bands, open windows show the sky and a chant. One look, night only. */
+:root{color-scheme:dark;
+  --night:#0a0514;--tent:#160d28;--well:#23173f;--pit:#07030f;--ink:#fff5e6;--muted:#cfc4ea;--rule:#3f2d6b;
+  --red:#ff2a3c;--redlo:#8c0f1d;--blue:#1fb2ff;--bluelo:#0b5c8c;--green:#58ff6b;--purple:#b667ff;--gold:#ffd23c;--orange:#ff8a1f;--pink:#ff4fd8;--steel:#c9d3e6;
+  --display:"Bungee","Mitr",Impact,sans-serif;--wicked:"Creepster","Mitr","Bungee",fantasy;
+  --body:"Atkinson Hyperlegible","Sarabun",Tahoma,system-ui,sans-serif;--mono:"JetBrains Mono","Sarabun",ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}
+html,body{background:var(--night);color:var(--ink)}
+body{margin:0;font:20px/1.55 var(--body)}
+#sky{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block}
+#spray{position:fixed;inset:0;width:100%;height:100%;z-index:50;pointer-events:none}
+[data-root]{position:relative;z-index:1;overflow-x:clip}
+.wrap{max-width:812px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+[data-lang="en"] .th{display:none!important}
+[data-lang="th"] .en{display:none!important}
+a{color:var(--gold);text-decoration-thickness:2px;text-underline-offset:3px}
+a:hover{color:var(--ink)}
+.say b a,.big a{color:inherit;text-decoration-color:var(--gold)}
+button{font:inherit;color:inherit}
+a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+
+/* hero */
+.hero{background:linear-gradient(180deg,rgba(10,5,20,.35),rgba(10,5,20,.05) 34%,rgba(10,5,20,.7) 82%,var(--night));padding-block:14px 46px}
+.bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.brand{font:400 15px/1 var(--display);letter-spacing:.06em;margin-right:auto;color:var(--gold);text-shadow:2px 2px 0 #000}
+.pill{display:flex;border:2.5px solid var(--ink);border-radius:999px;overflow:hidden;background:rgba(10,5,20,.6)}
+.pill button{font:700 17px var(--body);background:none;border:0;padding:6px 16px;min-height:44px;cursor:pointer}
+.pill button[aria-pressed="true"]{background:var(--ink);color:var(--night)}
+.icon{width:48px;height:48px;border-radius:50%;border:2.5px solid var(--ink);background:rgba(10,5,20,.6);cursor:pointer;display:grid;place-items:center;padding:0}
+.icon svg{width:26px;height:26px}
+.icon[aria-pressed="false"] .wave{display:none}
+.icon[aria-pressed="true"] .slash{display:none}
+.eyebrow{font:400 15px/1.2 var(--display);letter-spacing:.14em;color:var(--pink);margin:34px 0 0;text-shadow:2px 2px 0 #000}
+h1,h2{margin:0;font-weight:400;font-family:var(--display);text-wrap:balance}
+[data-lang="th"] h1,[data-lang="th"] h2,[data-lang="th"] .eyebrow,[data-lang="th"] .brand{font-family:"Mitr",var(--body);font-weight:600;letter-spacing:0}
+h1{font-size:clamp(50px,13.2vw,132px);line-height:.9;margin-top:10px;cursor:pointer;-webkit-tap-highlight-color:transparent;
+  text-shadow:.03em .03em 0 var(--red),.06em .06em 0 var(--purple),.09em .09em 0 var(--blue),0 0 .5em rgba(255,42,60,.55)}
+h1 .l{display:block;width:fit-content}
+[data-lang="th"] h1{line-height:1.12}
+h1 .mag{background:linear-gradient(90deg,var(--red) 50%,var(--blue) 50%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:.022em var(--ink);text-shadow:none;
+  filter:drop-shadow(.045em .045em 0 #000) drop-shadow(0 0 .28em rgba(31,178,255,.55))}
+.sub{font:400 clamp(32px,8vw,66px)/1 var(--wicked);letter-spacing:.03em;color:var(--green);margin:.28em 0 0;
+  text-shadow:0 0 12px rgba(88,255,107,.9),0 0 44px rgba(88,255,107,.5),.05em .05em 0 #03130a}
+[data-lang="th"] .sub,[data-lang="th"] .window p,[data-lang="th"] #toast{font-family:"Mitr",var(--body);font-weight:600;letter-spacing:0;line-height:1.15}
+.lede{font-size:clamp(21px,4.6vw,27px);font-weight:700;line-height:1.35;max-width:31ch;margin:.7em 0 .9em;text-shadow:0 2px 0 #000,0 0 18px #000}
+
+/* bands, awnings, windows */
+.band{position:relative;background:var(--night);padding-block:36px 34px}
+.band::before{content:"";position:absolute;inset:0 0 auto 0;height:24px;background:repeating-linear-gradient(90deg,var(--red) 0 32px,var(--ink) 32px 64px);
+  -webkit-mask:linear-gradient(#000 0 0) top/100% 9px no-repeat,radial-gradient(circle at 50% 0,#000 15.5px,transparent 16.5px) 0 8px/32px 16px repeat-x;
+  mask:linear-gradient(#000 0 0) top/100% 9px no-repeat,radial-gradient(circle at 50% 0,#000 15.5px,transparent 16.5px) 0 8px/32px 16px repeat-x}
+.window{min-height:44vh;display:grid;place-items:center;text-align:center;cursor:pointer;padding-block:48px;-webkit-tap-highlight-color:transparent}
+.window p{margin:0;font:400 clamp(46px,12.5vw,128px)/.94 var(--wicked);letter-spacing:.02em;color:var(--green);
+  text-shadow:0 0 14px rgba(88,255,107,.9),0 0 54px rgba(88,255,107,.5),.04em .04em 0 #03130a}
+.window.hot p{color:var(--gold);text-shadow:0 0 14px rgba(255,210,60,.9),0 0 54px rgba(255,42,60,.6),.04em .04em 0 #2a0508}
+h2{font-size:clamp(27px,6.2vw,44px);line-height:1.08;padding-top:34px;text-shadow:.05em .05em 0 var(--red),.1em .1em 0 var(--purple)}
+section:first-child h2{padding-top:6px}
+section p{margin:.6em 0;max-width:60ch}
+
+/* booths: a ring of chasing bulbs */
+.toy{position:relative;margin:20px 0 10px;padding:14px;border-radius:22px;background:#000;--c1:var(--gold);--c2:var(--red);
+  box-shadow:0 0 0 3px var(--rule),0 18px 50px rgba(0,0,0,.6),0 0 60px rgba(182,103,255,.2)}
+.in{position:relative;background:radial-gradient(130% 80% at 50% 0,#2b1a52 0,var(--tent) 62%);border-radius:12px;padding:12px;--c1:var(--red);--c2:var(--gold)}
+.toy::before,.toy::after,.in::before,.in::after{content:"";position:absolute;pointer-events:none;filter:drop-shadow(0 0 3px var(--gold))}
+.toy::before,.toy::after{inset:0}
+.in::before,.in::after{inset:-14px;opacity:0}
+.toy::before,.in::before{padding:0 18px;
+  background:radial-gradient(circle at 25% 50%,var(--c1) 0 3px,transparent 4px) 0 0/44px 14px space no-repeat,radial-gradient(circle at 75% 50%,var(--c2) 0 3px,transparent 4px) 0 0/44px 14px space no-repeat,
+    radial-gradient(circle at 25% 50%,var(--c1) 0 3px,transparent 4px) 0 100%/44px 14px space no-repeat,radial-gradient(circle at 75% 50%,var(--c2) 0 3px,transparent 4px) 0 100%/44px 14px space no-repeat;
+  background-origin:content-box}
+.toy::after,.in::after{padding:18px 0;
+  background:radial-gradient(circle at 50% 25%,var(--c1) 0 3px,transparent 4px) 0 0/14px 44px no-repeat space,radial-gradient(circle at 50% 75%,var(--c2) 0 3px,transparent 4px) 0 0/14px 44px no-repeat space,
+    radial-gradient(circle at 50% 25%,var(--c1) 0 3px,transparent 4px) 100% 0/14px 44px no-repeat space,radial-gradient(circle at 50% 75%,var(--c2) 0 3px,transparent 4px) 100% 0/14px 44px no-repeat space;
+  background-origin:content-box}
+canvas.cv{display:block;width:100%;height:auto;border-radius:10px;background:var(--pit);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.how{font-weight:700;margin:0 0 10px!important}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:14px}
+.go{font:400 17px/1 var(--display);letter-spacing:.03em;color:var(--ink);text-shadow:0 2px 0 rgba(0,0,0,.45);background:linear-gradient(180deg,#ff5463,var(--red));border:3px solid var(--ink);border-radius:14px;
+  padding:13px 18px;min-height:52px;cursor:pointer;box-shadow:0 6px 0 var(--redlo),0 0 22px rgba(255,42,60,.5);display:inline-flex;align-items:center;gap:8px;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+[data-lang="th"] .go{font-family:"Mitr",var(--body);font-weight:600;letter-spacing:0;font-size:19px}
+.go:active{transform:translateY(5px);box-shadow:0 1px 0 var(--redlo)}
+.go.blue{background:linear-gradient(180deg,#4dbfff,#0f86cc);box-shadow:0 6px 0 var(--bluelo),0 0 22px rgba(31,178,255,.5)}
+.go.blue:active{box-shadow:0 1px 0 var(--bluelo)}
+.go.gold{background:linear-gradient(180deg,#ffe680,var(--gold));color:#120a22;text-shadow:none;border-color:#120a22;box-shadow:0 6px 0 #9a7400,0 0 26px rgba(255,210,60,.6)}
+.go.gold:active{box-shadow:0 1px 0 #9a7400}
+.go[aria-pressed="true"]{background:linear-gradient(180deg,#a4ffad,var(--green));color:#062109;text-shadow:none;border-color:#062109;box-shadow:0 6px 0 #1c8a2a,0 0 26px rgba(88,255,107,.6)}
+.go.big{font-size:clamp(22px,5.6vw,34px);padding:18px 28px;border-radius:22px;min-height:70px}
+.go.sq{min-width:52px;justify-content:center;padding-inline:12px;font-size:22px}
+.lab{font-weight:700;font-size:18px;min-width:8.4em;font-variant-numeric:tabular-nums}
+input[type=range]{-webkit-appearance:none;appearance:none;flex:1 1 150px;min-width:0;height:44px;background:none;cursor:pointer;margin:0}
+input[type=range]::-webkit-slider-runnable-track{height:14px;border-radius:9px;background:linear-gradient(90deg,var(--blue),var(--purple),var(--red));border:2px solid var(--ink)}
+input[type=range]::-moz-range-track{height:10px;border-radius:9px;background:linear-gradient(90deg,var(--blue),var(--purple),var(--red));border:2px solid var(--ink)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:32px;height:32px;border-radius:50%;background:var(--gold);border:3px solid #120a22;margin-top:-11px;box-shadow:0 0 14px var(--gold)}
+input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:var(--gold);border:3px solid #120a22;box-shadow:0 0 14px var(--gold)}
+.say{font-weight:700;font-size:21px;line-height:1.35;margin-top:14px;min-height:2.7em}
+.say b{color:var(--gold)}
+.num{font:700 19px var(--mono);font-variant-numeric:tabular-nums;color:var(--green)}
+.math{font:500 16px/1.55 var(--mono);color:var(--green);background:var(--pit);border:1.5px dashed rgba(88,255,107,.55);border-radius:10px;padding:10px 12px;margin-top:14px;overflow-wrap:anywhere}
+.math .tag{display:inline-block;font:400 13px/1 var(--display);letter-spacing:.1em;color:#120a22;background:var(--green);border-radius:5px;padding:4px 7px;margin-right:8px;vertical-align:1px}
+[data-lang="th"] .math .tag{font-family:"Mitr",var(--body);font-weight:600;letter-spacing:0}
+.math b{color:var(--gold)}
+.note{font-size:16px;color:var(--muted);margin-top:10px;max-width:62ch}
+.key{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:16px;color:var(--muted);margin-top:10px}
+.key i{display:inline-block;width:22px;height:6px;border-radius:3px;vertical-align:middle;margin-right:6px}
+.meter{flex:1 1 120px;height:18px;border:2px solid var(--ink);border-radius:10px;overflow:hidden;background:var(--pit)}
+.meter i{display:block;height:100%;transform-origin:0 50%;transform:scaleX(0);transition:transform .25s;background:linear-gradient(90deg,var(--blue),var(--purple),var(--red))}
+
+/* the shelf */
+.shelf{display:flex;gap:8px;justify-content:center;padding:6px 0 2px}
+.seat{flex:1 1 0;max-width:76px;aspect-ratio:.82;border:3px solid var(--ink);border-radius:12px;background:var(--pit);display:flex;gap:12%;align-items:center;justify-content:center}
+.seat i{width:26%;height:66%;border-radius:8px;background:linear-gradient(180deg,var(--red) 50%,var(--blue) 50%);border:2px solid var(--ink);rotate:var(--r,0deg);cursor:pointer;box-shadow:0 0 14px rgba(255,210,60,.75)}
+.seat i.dn{--r:180deg}
+.seat.pair i{opacity:.4;box-shadow:none}
+.shelf.mag .seat{border-color:var(--gold);box-shadow:0 0 18px rgba(255,210,60,.5)}
+.el{flex:1;text-align:center;font:400 clamp(19px,5vw,28px)/1.1 var(--display)}
+[data-lang="th"] .el{font-family:"Mitr",var(--body);font-weight:600}
+.el small{display:block;font:700 15px var(--mono);color:var(--muted);margin-top:4px}
+.loose{font:400 clamp(40px,11vw,68px)/1 var(--display);color:var(--gold);text-align:center;margin-top:10px;text-shadow:.05em .05em 0 var(--red)}
+[data-lang="th"] .loose{font-family:"Mitr",var(--body);font-weight:600}
+
+/* the chop */
+.chopbox{position:relative;padding-top:74px}
+.bar5{display:flex;gap:10px;height:66px}
+.bar5 i{flex:1 1 0;min-width:0;border-radius:5px;background:linear-gradient(90deg,var(--blue) 50%,var(--red) 50%);display:flex;justify-content:space-around;align-items:center;font:400 18px var(--display);font-style:normal;text-shadow:0 2px 0 rgba(0,0,0,.4);box-shadow:0 0 0 2px var(--ink)}
+.hatchet{position:absolute;left:50%;top:0;width:76px;height:76px;margin-left:-38px;transform-origin:50% 92%;transform:rotate(-58deg);cursor:pointer}
+.lens{position:absolute;right:8px;top:2px;width:112px;height:112px;border-radius:50%;border:4px solid var(--gold);background:var(--pit);display:grid;place-items:center;box-shadow:0 0 24px rgba(255,210,60,.6)}
+.lens i{display:flex;width:74px;height:34px;border-radius:5px;background:linear-gradient(90deg,var(--blue) 50%,var(--red) 50%);justify-content:space-around;align-items:center;font:400 17px var(--display);font-style:normal;box-shadow:0 0 0 2px var(--ink)}
+.lens span{position:absolute;bottom:10px;left:0;right:0;text-align:center;font:700 12px var(--mono);color:var(--gold)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:10px;margin-top:14px}
+.stats div{background:var(--pit);border-radius:10px;padding:8px 10px;min-width:0}
+.stats small{display:block;font-size:14px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.stats b{font:700 20px var(--mono);font-variant-numeric:tabular-nums;color:var(--green);overflow-wrap:anywhere}
+
+/* ladder */
+.big{font:400 clamp(22px,5.6vw,32px)/1.1 var(--display);margin-top:12px}
+[data-lang="th"] .big{font-family:"Mitr",var(--body);font-weight:600}
+
+/* flip cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px}
+.card{perspective:900px;background:none;border:0;padding:0;cursor:pointer;text-align:left;min-height:236px;-webkit-tap-highlight-color:transparent}
+.card .f{position:relative;display:block;height:100%;min-height:236px;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.3,1.4,.5,1)}
+.card.flip .f{transform:rotateY(180deg)}
+.card .a,.card .b{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:16px;border:3px solid var(--ink);padding:14px;display:flex;align-items:center}
+.card .a{background:repeating-linear-gradient(135deg,var(--red) 0 16px,#c8172a 16px 32px);font:400 23px/1.15 var(--display);text-shadow:2px 2px 0 #000}
+[data-lang="th"] .card .a{font-family:"Mitr",var(--body);font-weight:600}
+.card .b{background:var(--well);transform:rotateY(180deg);font-size:18px;line-height:1.42}
+.card:nth-child(3n+2) .a{background:repeating-linear-gradient(135deg,#0f86cc 0 16px,#0b6ba6 16px 32px)}
+.card:nth-child(3n) .a{background:repeating-linear-gradient(135deg,#7d36c9 0 16px,#6226a8 16px 32px)}
+
+/* finale */
+.lines{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:10px;counter-reset:n}
+.lines li{counter-increment:n;background:var(--well);border-left:8px solid var(--red);border-radius:12px;padding:12px 14px 12px 58px;position:relative;font-size:21px;font-weight:700;line-height:1.35}
+.lines li:nth-child(even){border-left-color:var(--blue)}
+.lines li::before{content:counter(n);position:absolute;left:14px;top:50%;translate:0 -50%;font:400 30px/1 var(--display);color:var(--gold)}
+.mcl{font:400 clamp(34px,9vw,70px)/1 var(--wicked);color:var(--pink);text-align:center;margin:34px 0 6px;text-shadow:0 0 16px rgba(255,79,216,.8),.05em .05em 0 #000}
+[data-lang="th"] .mcl{font-family:"Mitr",var(--body);font-weight:600}
+.src{font-size:15px;color:var(--muted);line-height:1.5}
+.src li{margin:.3em 0}
+#toast{position:fixed;left:50%;top:42%;z-index:60;pointer-events:none;font:400 clamp(54px,15vw,170px)/.9 var(--wicked);color:var(--gold);white-space:nowrap;opacity:0;transform:translate(-50%,-50%);
+  text-shadow:0 0 20px rgba(255,210,60,.9),.05em .05em 0 var(--red),.1em .1em 0 #000}
+#toast.pop{animation:fade 1s}
+@keyframes fade{0%,100%{opacity:0}20%,70%{opacity:1}}
+
+@media (max-width:560px){body{font-size:19px}.toy{padding:13px}.in{padding:10px}.in::before,.in::after{inset:-13px}.go{font-size:16px;padding:12px 14px}.lab{min-width:7.4em;font-size:17px}.lens{width:96px;height:96px}.lens i{width:62px}}
+
+@media (prefers-reduced-motion:no-preference){
+  .in::before,.in::after{animation:chase .9s steps(1) infinite}
+  @keyframes chase{0%,49.9%{opacity:0}50%,100%{opacity:1}}
+  .sub{animation:buzz 5s infinite}
+  .window p{animation:buzz 7s infinite}
+  @keyframes buzz{0%,100%{opacity:1}41%{opacity:1}42%{opacity:.55}43%{opacity:1}47%{opacity:.7}48%{opacity:1}}
+  .go{transition:transform .14s cubic-bezier(.3,1.7,.5,1)}
+  @media (hover:hover){.go:hover{transform:translateY(-2px) scale(1.04)}.go:active{transform:translateY(5px)}h1:hover .l{animation:wob .5s}}
+  @keyframes wob{0%,100%{transform:none}30%{transform:rotate(-2deg) scale(1.03)}65%{transform:rotate(1.5deg)}}
+  .seat i{animation:drop .35s cubic-bezier(.3,1.6,.5,1) backwards}
+  @keyframes drop{from{translate:0 -34px;opacity:0}}
+  .seat i.twirl{animation:twirl .55s cubic-bezier(.3,1.3,.5,1)}
+  @keyframes twirl{to{rotate:calc(var(--r,0deg) + 360deg)}}
+  .hatchet.swing{animation:swing .34s cubic-bezier(.5,0,.6,1.5)}
+  @keyframes swing{0%{transform:rotate(-58deg)}45%{transform:rotate(24deg)}100%{transform:rotate(-58deg)}}
+  .bar5.hit{animation:hit .3s}
+  @keyframes hit{30%{transform:translateY(6px) scale(1.02,.94)}}
+  .loose.bump{animation:bump .35s cubic-bezier(.3,1.7,.5,1)}
+  @keyframes bump{40%{transform:scale(1.18) rotate(-3deg)}}
+  #toast.pop{animation:pop .95s cubic-bezier(.2,1.5,.4,1)}
+  @keyframes pop{0%{opacity:0;transform:translate(-50%,-50%) scale(.3) rotate(-10deg)}22%{opacity:1;transform:translate(-50%,-50%) scale(1.08) rotate(-4deg)}70%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(-5deg)}100%{opacity:0;transform:translate(-50%,-58%) scale(1.15) rotate(-5deg)}}
+}
+@media (prefers-reduced-motion:reduce){.card .f,.meter i{transition:none}}
+</style>
+<!--body-->
+<canvas id="sky" aria-hidden="true"></canvas>
+<canvas id="spray" aria-hidden="true"></canvas>
+<div id="toast" aria-hidden="true"><span class="en">WHOOP WHOOP!</span><span class="th">วู้ป วู้ป!</span></div>
+<div data-root data-lang="en">
+
+<header class="hero"><div class="wrap">
+  <div class="bar">
+    <div class="brand"><span class="en">Fucking Magnets</span><span class="th">แม่เหล็กแม่งเจ๋ง</span></div>
+    <div class="pill" role="group" aria-label="Language"><button type="button" id="lEn" aria-pressed="true">EN</button><button type="button" id="lTh" aria-pressed="false">ไทย</button></div>
+    <button type="button" class="icon" id="snd" aria-pressed="true" aria-label="Sound"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h4l6-5v16l-6-5H4z" fill="currentColor"/><path class="wave" d="M18 9.5c1.6 2 1.6 5 0 7M21 6.5c3 3.6 3 9.4 0 13"/><path class="slash" d="M18 9.5l6 7M24 9.5l-6 7"/></svg></button>
+  </div>
+  <p class="eyebrow"><span class="en">For the Juggalo family</span><span class="th">สำหรับแฟมิลี่จักกาโล</span></p>
+  <h1 id="h1"><span class="en"><span class="l">Fucking</span><span class="l mag">Magnets</span></span><span class="th"><span class="l">แม่เหล็ก</span><span class="l mag">แม่งเจ๋ง</span></span></h1>
+  <p class="sub"><span class="en">Here's how they work</span><span class="th">มันทำงานแบบนี้ไง</span></p>
+  <p class="lede"><span class="en">Whoop whoop, ninja. That question is the freshest one in physics. Here's the answer. It makes the miracle bigger.</span><span class="th">วู้ป วู้ป นินจา! คำถามนั้นคือคำถามที่เฟี้ยวที่สุดในฟิสิกส์ นี่คือคำตอบ รู้แล้วยิ่งมหัศจรรย์กว่าเดิม</span></p>
+  <button type="button" class="go gold big" id="whoop1"><span class="en">Whoop whoop</span><span class="th">วู้ป วู้ป</span></button>
+</div></header>
+
+<main>
+<div class="band"><div class="wrap">
+  <section id="grab">
+    <h2><span class="en">Grab 'em</span><span class="th">จับเล่นเลย</span></h2>
+    <div class="toy"><div class="in">
+      <p class="how"><span class="en">Drag a magnet. Tap it to flip. Let go and watch.</span><span class="th">ลากแม่เหล็ก แตะเพื่อกลับหัว ปล่อยมือแล้วดู</span></p>
+      <canvas class="cv" id="fieldCv" role="img" aria-label="Two bar magnets in a field of iron dust"></canvas>
+      <div class="row">
+        <button type="button" class="go" id="fFlip"><span class="en">Flip one</span><span class="th">กลับหัวอันนึง</span></button>
+        <button type="button" class="go blue" id="fTurn"><span class="en">Turn it</span><span class="th">หมุน</span></button>
+        <button type="button" class="go gold" id="fReset"><span class="en">Start over</span><span class="th">เริ่มใหม่</span></button>
+        <span class="num" id="fieldNum" aria-live="off"></span>
+      </div>
+      <div class="say" id="fieldSay" aria-live="polite"></div>
+      <div class="key"><span><i style="background:var(--red)"></i><span class="en">red end = north (N)</span><span class="th">ปลายแดง = ขั้วเหนือ (N)</span></span><span><i style="background:var(--blue)"></i><span class="en">blue end = south (S)</span><span class="th">ปลายน้ำเงิน = ขั้วใต้ (S)</span></span><span><i style="background:var(--gold)"></i><span class="en">sparks run out of north, into south</span><span class="th">ประกายวิ่งออกจากเหนือ เข้าใต้</span></span></div>
+      <div class="math"><span class="tag"><span class="en">The math</span><span class="th">คณิต</span></span><span class="en">each end <a href="https://en.wikipedia.org/wiki/Force_between_magnets" target="_blank" rel="noopener">shoves or pulls</a> with <b>strength ÷ distance²</b>. Four ends: add 'em up. The dust shows the total, same as <a href="https://en.wikipedia.org/wiki/Iron_filings" target="_blank" rel="noopener">iron filings</a> on paper.</span><span class="th">แต่ละขั้ว<a href="https://en.wikipedia.org/wiki/Force_between_magnets" target="_blank" rel="noopener">ผลักหรือดูด</a>ด้วยแรง <b>ความแรง ÷ ระยะทาง²</b> มีสี่ขั้ว บวกกันหมด ผงที่เห็นคือผลรวม เหมือน<a href="https://en.wikipedia.org/wiki/Iron_filings" target="_blank" rel="noopener">ผงเหล็ก</a>บนกระดาษ</span></div>
+    </div></div>
+  </section>
+
+  <section id="tiny">
+    <h2><span class="en">Tiny magnets, all the way down</span><span class="th">แม่เหล็กจิ๋ว ลึกลงไปถึงก้น</span></h2>
+    <p><span class="en">An <a href="https://en.wikipedia.org/wiki/Electron" target="_blank" rel="noopener">electron</a> (a speck of charge inside every atom) <a href="https://en.wikipedia.org/wiki/Electron_magnetic_moment" target="_blank" rel="noopener">is a magnet</a>. Nobody wound it up. It came that way, same as it came with its charge. You are packed with fucking magnets.</span><span class="th"><a href="https://th.wikipedia.org/wiki/อิเล็กตรอน" target="_blank" rel="noopener">อิเล็กตรอน</a> (เม็ดประจุจิ๋วที่อยู่ในทุกอะตอม) <a href="https://en.wikipedia.org/wiki/Electron_magnetic_moment" target="_blank" rel="noopener">เป็นแม่เหล็กในตัว</a> ไม่มีใครไปไขลานให้ มันเกิดมาเป็นแบบนั้น เหมือนที่เกิดมาพร้อมประจุ ในตัวเราแม่งมีแม่เหล็กอยู่เต็มไปหมด</span></p>
+    <p><span class="en">Electrons pair off, one right side up, one flipped. A pair cancels. The <a href="https://en.wikipedia.org/wiki/Unpaired_electron" target="_blank" rel="noopener">loose ones</a> are the magnet.</span><span class="th">อิเล็กตรอนจับคู่กัน ตัวหนึ่งหัวตั้ง ตัวหนึ่งหัวกลับ จับคู่แล้วหักล้างกันหมด <a href="https://th.wikipedia.org/wiki/อิเล็กตรอนขาดคู่" target="_blank" rel="noopener">ตัวที่เหลือเดี่ยว</a>นั่นแหละคือแม่เหล็ก</span></p>
+    <div class="toy"><div class="in">
+      <p class="how"><span class="en">This shelf has five seats, two to a seat. Atoms fill it <a href="https://en.wikipedia.org/wiki/Hund%27s_rule_of_maximum_multiplicity" target="_blank" rel="noopener">one per seat first</a>, all the same way up. Then they double up.</span><span class="th">ชั้นนี้มีห้าที่นั่ง นั่งได้ที่ละสอง อะตอม<a href="https://en.wikipedia.org/wiki/Hund%27s_rule_of_maximum_multiplicity" target="_blank" rel="noopener">ใส่ที่ละตัวก่อน</a> หันทางเดียวกันหมด แล้วค่อยนั่งซ้อน</span></p>
+      <div class="shelf" id="shelf"></div>
+      <div class="loose" id="looseN" aria-live="polite"></div>
+      <div class="row">
+        <button type="button" class="go blue sq" id="elPrev" aria-label="Lighter metal"><svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><path d="M14 3 L5 10 L14 17 Z" fill="currentColor"/></svg></button>
+        <div class="el" id="elName"></div>
+        <button type="button" class="go blue sq" id="elNext" aria-label="Heavier metal"><svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><path d="M6 3 L15 10 L6 17 Z" fill="currentColor"/></svg></button>
+      </div>
+      <div class="say" id="shelfSay" aria-live="polite"></div>
+      <div class="math"><span class="tag"><span class="en">The math</span><span class="th">คณิต</span></span><span id="shelfMath"></span></div>
+      <p class="note"><span class="en">Counts are for one atom alone. Packed into a chunk of iron, atoms share electrons and it averages near 2.2 loose each.</span><span class="th">ตัวเลขนี้นับจากอะตอมตัวเดียวโดด ๆ พออัดกันเป็นก้อนเหล็ก อะตอมแบ่งอิเล็กตรอนกัน เฉลี่ยเหลือเดี่ยวราว 2.2 ต่อตัว</span></p>
+    </div></div>
+  </section>
+</div></div>
+
+<div class="window" role="button" tabindex="0"><p><span class="en">Whoop<br>whoop!</span><span class="th">วู้ป<br>วู้ป!</span></p></div>
+
+<div class="band"><div class="wrap">
+  <section id="fam">
+    <h2><span class="en">The family lines up</span><span class="th">แฟมิลี่เรียงแถว</span></h2>
+    <p><span class="en">One loose electron is a whisper. In iron, each atom <a href="https://en.wikipedia.org/wiki/Ferromagnetism" target="_blank" rel="noopener">copies its neighbors</a>, so a whole block ends up facing one way. That block is called a <a href="https://en.wikipedia.org/wiki/Magnetic_domain" target="_blank" rel="noopener">domain</a>.</span><span class="th">อิเล็กตรอนเดี่ยวตัวเดียวแรงแค่เสียงกระซิบ แต่ในเหล็ก อะตอมแต่ละตัว<a href="https://th.wikipedia.org/wiki/เฟร์โรแมกเนติก" target="_blank" rel="noopener">หันตามเพื่อนบ้าน</a> ทั้งก้อนเลยหันทางเดียวกัน ก้อนแบบนี้เรียกว่า<a href="https://en.wikipedia.org/wiki/Magnetic_domain" target="_blank" rel="noopener">โดเมน</a></span></p>
+    <div class="toy"><div class="in">
+      <p class="how"><span class="en">Each square is a crowd of atoms. Red faces up, blue faces down. Each one checks its four neighbors and goes with the family. Tap the crowd to start some shit.</span><span class="th">แต่ละช่องคืออะตอมกลุ่มหนึ่ง แดงหันขึ้น น้ำเงินหันลง ทุกช่องมองเพื่อนบ้านสี่ด้านแล้วหันตามพวก แตะในฝูงเพื่อป่วนดู</span></p>
+      <canvas class="cv" id="isingCv" role="img" aria-label="A grid of red and blue squares: blocks of atoms facing up or down"></canvas>
+      <div class="row"><label class="lab" for="heat" id="heatLab"></label><input type="range" id="heat" min="20" max="1100" step="10" value="20"></div>
+      <div class="row">
+        <button type="button" class="go" id="bigMag" aria-pressed="false"><span class="en">Big magnet</span><span class="th">แม่เหล็กยักษ์</span></button>
+        <button type="button" class="go blue" id="shake"><span class="en">Shake 'em up</span><span class="th">เขย่าให้มั่ว</span></button>
+      </div>
+      <div class="row"><span class="lab" id="isLab"></span><div class="meter" aria-hidden="true"><i id="isMeter"></i></div></div>
+      <div class="say" id="isSay" aria-live="polite"></div>
+      <div class="math"><span class="tag"><span class="en">The math</span><span class="th">คณิต</span></span><span class="en"><a href="https://en.wikipedia.org/wiki/Metropolis%E2%80%93Hastings_algorithm" target="_blank" rel="noopener">odds of a flip</a> = <b>e^(−cost ÷ heat)</b>. Cold: going against the family costs too much. Hot: anything goes. 770°C is iron's own number, its <a href="https://en.wikipedia.org/wiki/Curie_temperature" target="_blank" rel="noopener">Curie point</a>. The grid is a flat cartoon of iron, the <a href="https://en.wikipedia.org/wiki/Ising_model" target="_blank" rel="noopener">Ising model</a>.</span><span class="th"><a href="https://en.wikipedia.org/wiki/Metropolis%E2%80%93Hastings_algorithm" target="_blank" rel="noopener">โอกาสกลับหัว</a> = <b>e^(−ต้นทุน ÷ ความร้อน)</b> ตอนเย็น สวนพวกแล้วแพงเกิน ตอนร้อน อะไรก็เกิดได้ 770°C คือตัวเลขของเหล็กเอง เรียกว่า<a href="https://en.wikipedia.org/wiki/Curie_temperature" target="_blank" rel="noopener">จุดกูรี</a> ส่วนตารางนี้เป็นการ์ตูนเหล็กแบบแบน ๆ ชื่อ<a href="https://en.wikipedia.org/wiki/Ising_model" target="_blank" rel="noopener">แบบจำลองไอซิง</a></span></div>
+    </div></div>
+  </section>
+
+  <section id="chop">
+    <h2><span class="en">Chop it. Still two ends.</span><span class="th">สับครึ่ง ก็ยังมีสองขั้ว</span></h2>
+    <p><span class="en">Chop a magnet and no <a href="https://en.wikipedia.org/wiki/Magnetic_monopole" target="_blank" rel="noopener">lone north</a> falls out. Two whole fucking magnets fall out.</span><span class="th">สับแม่เหล็กออกเป็นสองท่อน ไม่ได้<a href="https://th.wikipedia.org/wiki/แม่เหล็กขั้วเดียว" target="_blank" rel="noopener">ขั้วเหนือโดด ๆ</a> ออกมา ได้แม่เหล็กครบสองอัน แม่งเจ๋งว่ะ</span></p>
+    <div class="toy"><div class="in">
+      <div class="chopbox">
+        <svg class="hatchet" id="hatchet" viewBox="0 0 76 76" role="img" aria-label="Hatchet"><rect x="34" y="16" width="8" height="56" rx="4" fill="#b0702f" stroke="#fff5e6" stroke-width="2"/><path d="M42 12 L20 9 Q6 22 20 37 L42 33 Z" fill="#c9d3e6" stroke="#fff5e6" stroke-width="2" stroke-linejoin="round"/><path d="M20 9 Q6 22 20 37" fill="none" stroke="#ffd23c" stroke-width="3"/></svg>
+        <div class="lens" id="lens" hidden><i><b>S</b><b>N</b></i><span id="lensN"></span></div>
+        <div class="bar5" id="bar5"></div>
+      </div>
+      <div class="row">
+        <button type="button" class="go big" id="chopGo"><span class="en">Chop</span><span class="th">สับ!</span></button>
+        <button type="button" class="go gold" id="chopReset"><span class="en">Start over</span><span class="th">เริ่มใหม่</span></button>
+      </div>
+      <div class="stats">
+        <div><small><span class="en">Chops</span><span class="th">สับไป</span></small><b id="stN">0</b></div>
+        <div><small><span class="en">Pieces</span><span class="th">ชิ้น</span></small><b id="stP">1</b></div>
+        <div><small><span class="en">Each one</span><span class="th">ชิ้นละ</span></small><b id="stW">50 mm</b></div>
+        <div><small><span class="en">Norths alone</span><span class="th">ขั้วเหนือโดด ๆ</span></small><b>0</b></div>
+      </div>
+      <div class="say" id="chopSay" aria-live="polite"></div>
+      <div class="math"><span class="tag"><span class="en">The math</span><span class="th">คณิต</span></span><span id="chopMath"></span></div>
+      <p class="note"><span class="en">μm is a thousandth of a millimeter. nm is a millionth of a millimeter. An iron atom is about 0.25 nm across.</span><span class="th">μm คือหนึ่งในพันของมิลลิเมตร nm คือหนึ่งในล้านของมิลลิเมตร อะตอมเหล็กกว้างราว 0.25 nm</span></p>
+    </div></div>
+  </section>
+
+  <section id="far">
+    <h2><span class="en">Back up and it's gone</span><span class="th">ถอยนิดเดียว แรงหายเกือบหมด</span></h2>
+    <p><span class="en"><a href="https://en.wikipedia.org/wiki/Magnetic_dipole%E2%80%93dipole_interaction" target="_blank" rel="noopener">Pull between two magnets</a> drops with distance to the fourth power. Twice as far: sixteen times weaker.</span><span class="th"><a href="https://en.wikipedia.org/wiki/Magnetic_dipole%E2%80%93dipole_interaction" target="_blank" rel="noopener">แรงดูดระหว่างแม่เหล็กสองอัน</a>ลดตามระยะทางยกกำลังสี่ ไกลขึ้นสองเท่า แรงเหลือหนึ่งในสิบหก</span></p>
+    <div class="toy"><div class="in">
+      <canvas class="cv" id="distCv" role="img" aria-label="Two magnets on a rail and a graph of pull against distance"></canvas>
+      <div class="key"><span><i style="background:var(--red)"></i><span class="en">two magnets: 1 ÷ d⁴</span><span class="th">แม่เหล็กสองอัน: 1 ÷ d⁴</span></span><span><i style="background:var(--blue)"></i><span class="en"><a href="https://en.wikipedia.org/wiki/Inverse-square_law" target="_blank" rel="noopener">light from a bulb</a>: 1 ÷ d²</span><span class="th"><a href="https://en.wikipedia.org/wiki/Inverse-square_law" target="_blank" rel="noopener">แสงจากหลอดไฟ</a>: 1 ÷ d²</span></span></div>
+      <div class="row"><label class="lab" for="dist" id="distLab"></label><input type="range" id="dist" min="1" max="4" step="0.05" value="1"></div>
+      <div class="say" id="distSay" aria-live="polite"></div>
+      <div class="math"><span class="tag"><span class="en">The math</span><span class="th">คณิต</span></span><span id="distMath"></span></div>
+      <p class="note"><span class="en">Why so fast: the near end pulls, the far end shoves. Almost a tie. What you feel is the leftover, and the leftover still slams them together.</span><span class="th">ทำไมหายเร็ว: ขั้วใกล้ดูด ขั้วไกลผลัก เกือบเจ๊ากัน ที่รู้สึกคือเศษที่เหลือ แค่เศษก็ยังดูดกันดังแป๊ก</span></p>
+    </div></div>
+  </section>
+</div></div>
+
+<div class="window hot" role="button" tabindex="0"><p><span class="en">North. South.<br>Family.</span><span class="th">เหนือ ใต้<br>แฟมิลี่</span></p></div>
+
+<div class="band"><div class="wrap">
+  <section id="coil">
+    <h2><span class="en">Lightning makes magnets</span><span class="th">ไฟฟ้าสร้างแม่เหล็ก</span></h2>
+    <p><span class="en">Run current through a wire and <a href="https://en.wikipedia.org/wiki/Hans_Christian_%C3%98rsted" target="_blank" rel="noopener">the wire is a magnet</a>. <a href="https://en.wikipedia.org/wiki/Solenoid" target="_blank" rel="noopener">Coil it</a> and the loops stack up. <a href="https://en.wikipedia.org/wiki/Electromagnet" target="_blank" rel="noopener">Slide in a nail</a> and the nail's atoms line up and join the party.</span><span class="th">ปล่อยกระแสไฟผ่านลวด <a href="https://th.wikipedia.org/wiki/แฮนส์_เครสแจน_เออร์สเตด" target="_blank" rel="noopener">ลวดก็กลายเป็นแม่เหล็ก</a> <a href="https://th.wikipedia.org/wiki/โซเลนอยด์" target="_blank" rel="noopener">ขดเป็นวง</a> แรงก็ซ้อนกันทีละวง <a href="https://th.wikipedia.org/wiki/แม่เหล็กไฟฟ้า_(ชนิดแม่เหล็ก)" target="_blank" rel="noopener">สอดตะปูเข้าไป</a> อะตอมในตะปูเรียงแถวมาร่วมวงด้วย</span></p>
+    <div class="toy"><div class="in">
+      <canvas class="cv" id="emCv" role="img" aria-label="A coil of wire around a nail, wired to a battery, picking up paperclips"></canvas>
+      <div class="row"><label class="lab" for="wraps" id="wrapsLab"></label><input type="range" id="wraps" min="20" max="500" step="10" value="200"></div>
+      <div class="row"><label class="lab" for="amps" id="ampsLab"></label><input type="range" id="amps" min="0" max="5" step="0.1" value="2"></div>
+      <div class="row"><button type="button" class="go" id="nail" aria-pressed="true"><span class="en">Nail in</span><span class="th">ใส่ตะปู</span></button><span class="num" id="emNum"></span></div>
+      <div class="say" id="emSay" aria-live="polite"></div>
+      <div class="math"><span class="tag"><span class="en">The math</span><span class="th">คณิต</span></span><span id="emMath"></span></div>
+      <p class="note"><span class="en"><a href="https://en.wikipedia.org/wiki/Tesla_(unit)" target="_blank" rel="noopener">Tesla (T)</a> is the unit for how strong a magnet's field is; mT is a thousandth of one. <a href="https://en.wikipedia.org/wiki/Ampere" target="_blank" rel="noopener">Amps (A)</a> count the current. The ×90 is a rough figure for a nail 15 times longer than it is wide.</span><span class="th"><a href="https://th.wikipedia.org/wiki/เทสลา_(หน่วยวัด)" target="_blank" rel="noopener">เทสลา (T)</a> คือหน่วยวัดความแรงของสนามแม่เหล็ก mT คือหนึ่งในพันของเทสลา <a href="https://th.wikipedia.org/wiki/แอมแปร์" target="_blank" rel="noopener">แอมป์ (A)</a> คือหน่วยนับกระแสไฟ ตัวคูณ 90 เป็นค่าประมาณของตะปูที่ยาว 15 เท่าของความกว้าง</span></p>
+    </div></div>
+  </section>
+
+  <section id="bass">
+    <h2><span class="en">Magnets make lightning. And bass.</span><span class="th">แม่เหล็กสร้างไฟฟ้า แล้วก็เบส</span></h2>
+    <p><span class="en"><a href="https://en.wikipedia.org/wiki/Faraday%27s_law_of_induction" target="_blank" rel="noopener">Move a magnet past a coil</a> and current flows. Faster, more volts. <a href="https://en.wikipedia.org/wiki/Electric_generator" target="_blank" rel="noopener">Power plants</a> do this all day.</span><span class="th"><a href="https://th.wikipedia.org/wiki/กฎการเหนี่ยวนำของฟาราเดย์" target="_blank" rel="noopener">ขยับแม่เหล็กผ่านขดลวด</a> กระแสไฟก็ไหล ยิ่งเร็ว โวลต์ยิ่งสูง <a href="https://th.wikipedia.org/wiki/เครื่องกำเนิดไฟฟ้า" target="_blank" rel="noopener">โรงไฟฟ้า</a>ทำแบบนี้ทั้งวัน</span></p>
+    <div class="toy"><div class="in">
+      <p class="how"><span class="en">Drag the magnet through the coil. Or hit Shake.</span><span class="th">ลากแม่เหล็กผ่านขดลวด หรือกด เขย่า</span></p>
+      <canvas class="cv" id="farCv" role="img" aria-label="A magnet sliding through a coil wired to a light bulb, with a voltage trace below"></canvas>
+      <div class="row"><button type="button" class="go" id="fShake" aria-pressed="false"><span class="en">Shake</span><span class="th">เขย่า</span></button><label class="lab" for="fSpeed" id="fSpeedLab"></label><input type="range" id="fSpeed" min="0.5" max="6" step="0.1" value="2.5"></div>
+      <div class="row"><label class="lab" for="fWraps" id="fWrapsLab"></label><input type="range" id="fWraps" min="10" max="500" step="10" value="100"><span class="num" id="farNum"></span></div>
+      <div class="say" id="farSay" aria-live="polite"></div>
+      <div class="math"><span class="tag"><span class="en">The math</span><span class="th">คณิต</span></span><span class="en"><b>volts = wraps × how fast the field through the coil changes</b>. Double the speed or double the wraps: double the volts.</span><span class="th"><b>โวลต์ = จำนวนรอบ × ความเร็วที่สนามในขดลวดเปลี่ยน</b> เร็วขึ้นสองเท่าหรือพันเพิ่มสองเท่า โวลต์ก็สองเท่า</span></div>
+    </div></div>
+    <p><span class="en">Now run it backwards. Feed current to a coil sitting in a magnet and <a href="https://en.wikipedia.org/wiki/Voice_coil" target="_blank" rel="noopener">the coil jumps</a>. Glue a paper cone to it. That's a <a href="https://en.wikipedia.org/wiki/Loudspeaker" target="_blank" rel="noopener">speaker</a>.</span><span class="th">ทีนี้ทำกลับด้าน ป้อนกระแสให้ขดลวดที่อยู่ในแม่เหล็ก <a href="https://en.wikipedia.org/wiki/Voice_coil" target="_blank" rel="noopener">ขดลวดจะกระโดด</a> เอากรวยกระดาษติดเข้าไป นั่นคือ<a href="https://th.wikipedia.org/wiki/ลำโพง" target="_blank" rel="noopener">ลำโพง</a></span></p>
+    <div class="toy"><div class="in">
+      <canvas class="cv" id="spkCv" role="img" aria-label="Cutaway of a speaker: ring magnet, coil and paper cone"></canvas>
+      <div class="row"><button type="button" class="go big" id="bassGo" aria-pressed="false"><span class="en">Drop the bass</span><span class="th">ปล่อยเบส</span></button><button type="button" class="go gold" id="whoop2"><span class="en">Whoop whoop</span><span class="th">วู้ป วู้ป</span></button></div>
+      <div class="row"><label class="lab" for="hz" id="hzLab"></label><input type="range" id="hz" min="30" max="160" step="1" value="55"></div>
+      <div class="say" id="spkSay" aria-live="polite"></div>
+      <div class="key"><span><i style="background:var(--orange)"></i><span class="en">coil</span><span class="th">ขดลวด</span></span><span><i style="background:var(--red)"></i><span class="en">ring magnet</span><span class="th">แม่เหล็กวงแหวน</span></span><span><i style="background:var(--ink)"></i><span class="en">paper cone</span><span class="th">กรวยกระดาษ</span></span></div>
+    </div></div>
+  </section>
+</div></div>
+
+<div class="window" role="button" tabindex="0"><p><span class="en">No magnets,<br>no bass.</span><span class="th">ไม่มีแม่เหล็ก<br>ก็ไม่มีเบส</span></p></div>
+
+<div class="band"><div class="wrap">
+  <section id="strong">
+    <h2><span class="en">How strong they get</span><span class="th">แรงได้ถึงไหน</span></h2>
+    <div class="toy"><div class="in">
+      <canvas class="cv" id="ladCv" role="img" aria-label="A drawing of the chosen magnet above a ruler where each tick is ten times the last"></canvas>
+      <div class="row"><button type="button" class="go blue sq" id="ladPrev" aria-label="Weaker"><svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><path d="M14 3 L5 10 L14 17 Z" fill="currentColor"/></svg></button><input type="range" id="lad" min="0" max="7" step="1" value="2" aria-label="Strength"><button type="button" class="go blue sq" id="ladNext" aria-label="Stronger"><svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><path d="M6 3 L15 10 L6 17 Z" fill="currentColor"/></svg></button></div>
+      <div class="big" id="ladName" aria-live="polite"></div>
+      <div class="num" id="ladNum"></div>
+      <div class="say" id="ladSay"></div>
+      <div class="math"><span class="tag"><span class="en">The math</span><span class="th">คณิต</span></span><span id="ladMath"></span></div>
+    </div></div>
+  </section>
+
+  <section id="deep">
+    <h2><span class="en">The deep end</span><span class="th">ลงลึกสุดทาง</span></h2>
+    <p><span class="en">Why do loose electrons copy their neighbors? Magnet-on-magnet pull is thousands of times too weak for that. Here's the trick. Two electrons facing the same way <a href="https://en.wikipedia.org/wiki/Pauli_exclusion_principle" target="_blank" rel="noopener">can't crowd the same spot</a>, so they stay apart. Electrons shove each other, so apart is the cheap seat. Physicists call it <a href="https://en.wikipedia.org/wiki/Exchange_interaction" target="_blank" rel="noopener">exchange</a>.</span><span class="th">ทำไมอิเล็กตรอนเดี่ยวถึงหันตามเพื่อนบ้าน? แรงดูดแบบแม่เหล็กต่อแม่เหล็กอ่อนเกินไปหลายพันเท่า กลไกเป็นแบบนี้ อิเล็กตรอนสองตัวที่หันทางเดียวกัน<a href="https://th.wikipedia.org/wiki/หลักการกีดกันของเพาลี" target="_blank" rel="noopener">เบียดอยู่จุดเดียวกันไม่ได้</a> มันเลยอยู่ห่างกัน และเพราะอิเล็กตรอนผลักกันเอง อยู่ห่างกันจึงเปลืองแรงน้อยกว่า นักฟิสิกส์เรียกสิ่งนี้ว่า <a href="https://en.wikipedia.org/wiki/Exchange_interaction" target="_blank" rel="noopener">แรงแลกเปลี่ยน (exchange)</a></span></p>
+    <p><span class="en">And why is an electron <a href="https://en.wikipedia.org/wiki/Spin_(physics)" target="_blank" rel="noopener">a magnet at all</a>? In 1983 somebody asked <a href="https://en.wikipedia.org/wiki/Richard_Feynman" target="_blank" rel="noopener">Richard Feynman</a>, a Nobel physicist, <a href="https://www.sciencealert.com/watch-richard-feynman-on-why-he-can-t-tell-you-how-magnets-work" target="_blank" rel="noopener">why magnets push</a>. He said: “I can't explain that attraction in terms of anything else that's familiar to you.” Nothing sits underneath it. It's one of the bottom bricks of the world.</span><span class="th">แล้วทำไมอิเล็กตรอนถึง<a href="https://th.wikipedia.org/wiki/สปิน_(ฟิสิกส์)" target="_blank" rel="noopener">เป็นแม่เหล็กตั้งแต่แรก</a>? ปี 1983 มีคนถาม<a href="https://th.wikipedia.org/wiki/ริชาร์ด_ไฟน์แมน" target="_blank" rel="noopener">ริชาร์ด ไฟน์แมน</a> นักฟิสิกส์รางวัลโนเบล ว่า<a href="https://www.sciencealert.com/watch-richard-feynman-on-why-he-can-t-tell-you-how-magnets-work" target="_blank" rel="noopener">ทำไมแม่เหล็กถึงผลักกัน</a> เขาตอบว่า “ผมอธิบายแรงดูดนั้นด้วยสิ่งอื่นที่คุณคุ้นเคยไม่ได้” ไม่มีอะไรอยู่ใต้มันอีกแล้ว มันคืออิฐก้อนล่างสุดของโลกก้อนหนึ่ง</span></p>
+    <p><b><span class="en">You picked up a fucking magnet and felt a miracle. You read it right.</span><span class="th">ถือแม่เหล็กแล้วรู้สึกว่าแม่งมหัศจรรย์ รู้สึกถูกแล้ว นินจา</span></b></p>
+  </section>
+
+  <section id="facts">
+    <h2><span class="en">Wicked facts</span><span class="th">เรื่องโหด ๆ</span></h2>
+    <p class="how"><span class="en">Tap a card.</span><span class="th">แตะการ์ด</span></p>
+    <div class="cards">
+      <div class="card" role="button" tabindex="0" aria-pressed="false"><span class="f"><span class="a"><span class="en">Which way does a compass point?</span><span class="th">เข็มทิศชี้ไปทางไหน?</span></span><span class="b"><span class="en">At a <a href="https://en.wikipedia.org/wiki/North_magnetic_pole" target="_blank" rel="noopener">south-type pole</a>. Earth's magnet has its south end up north, and opposite ends grab.</span><span class="th">ชี้ไปหา<a href="https://en.wikipedia.org/wiki/North_magnetic_pole" target="_blank" rel="noopener">ขั้วแบบใต้</a> แม่เหล็กของโลกเอาปลายใต้ไว้ทางทิศเหนือ แล้วขั้วต่างกันก็ดูดกัน</span></span></span></div>
+      <div class="card" role="button" tabindex="0" aria-pressed="false"><span class="f"><span class="a"><span class="en">Can heat kill a magnet?</span><span class="th">ความร้อนฆ่าแม่เหล็กได้ไหม?</span></span><span class="b"><span class="en">Yes. Iron quits at 770°C, nickel near 355°C, each at its <a href="https://en.wikipedia.org/wiki/Curie_temperature" target="_blank" rel="noopener">Curie point</a>. Cool it off and the atoms line back up, in blocks.</span><span class="th">ได้ เหล็กเลิกเป็นแม่เหล็กที่ 770°C นิกเกิลราว 355°C เรียกว่า<a href="https://en.wikipedia.org/wiki/Curie_temperature" target="_blank" rel="noopener">จุดกูรี</a> พอเย็นลง อะตอมก็กลับมาเรียงแถวเป็นก้อน ๆ</span></span></span></div>
+      <div class="card" role="button" tabindex="0" aria-pressed="false"><span class="f"><span class="a"><span class="en">A magnet for cold days only?</span><span class="th">แม่เหล็กเฉพาะวันอากาศเย็น?</span></span><span class="b"><span class="en"><a href="https://en.wikipedia.org/wiki/Gadolinium" target="_blank" rel="noopener">Gadolinium</a>. Under about 20°C it sticks to a magnet the way iron does. Warmer, it lets go.</span><span class="th"><a href="https://th.wikipedia.org/wiki/แกโดลิเนียม" target="_blank" rel="noopener">แกโดลิเนียม</a> ต่ำกว่าราว 20°C มันติดแม่เหล็กเหมือนเหล็ก อุ่นกว่านั้นก็ปล่อย</span></span></span></div>
+      <div class="card" role="button" tabindex="0" aria-pressed="false"><span class="f"><span class="a"><span class="en">Did a frog float?</span><span class="th">กบลอยได้จริงเหรอ?</span></span><span class="b"><span class="en">1997, the Netherlands. A <a href="https://doi.org/10.1088/0143-0807/18/4/012" target="_blank" rel="noopener">live frog hung in midair</a> inside a 16-tesla magnet and came out fine. <a href="https://en.wikipedia.org/wiki/Diamagnetism" target="_blank" rel="noopener">Water pushes back</a> against a strong field.</span><span class="th">ปี 1997 ที่เนเธอร์แลนด์ <a href="https://doi.org/10.1088/0143-0807/18/4/012" target="_blank" rel="noopener">กบเป็น ๆ ลอยค้างกลางอากาศ</a>ในแม่เหล็ก 16 เทสลา แล้วออกมาสบายดี <a href="https://th.wikipedia.org/wiki/ไดอะแมกเนติก" target="_blank" rel="noopener">น้ำจะดันสวน</a>สนามแรง ๆ</span></span></span></div>
+      <div class="card" role="button" tabindex="0" aria-pressed="false"><span class="f"><span class="a"><span class="en">Fucking magnets in your pocket?</span><span class="th">ในกระเป๋ากางเกงแม่งก็มีแม่เหล็ก?</span></span><span class="b"><span class="en">Phone speaker, earbuds, the buzzer, the <a href="https://en.wikipedia.org/wiki/Magnetometer" target="_blank" rel="noopener">compass chip</a>, the <a href="https://en.wikipedia.org/wiki/Magnetic_stripe_card" target="_blank" rel="noopener">stripe on a bank card</a>.</span><span class="th">ลำโพงมือถือ หูฟัง ตัวสั่น <a href="https://en.wikipedia.org/wiki/Magnetometer" target="_blank" rel="noopener">ชิปเข็มทิศ</a> <a href="https://en.wikipedia.org/wiki/Magnetic_stripe_card" target="_blank" rel="noopener">แถบดำบนบัตรธนาคาร</a></span></span></span></div>
+      <div class="card" role="button" tabindex="0" aria-pressed="false"><span class="f"><span class="a"><span class="en">What lights the northern sky?</span><span class="th">แสงเหนือมาจากไหน?</span></span><span class="b"><span class="en">The Sun throws <a href="https://en.wikipedia.org/wiki/Solar_wind" target="_blank" rel="noopener">charged specks</a>. Earth's field steers them to the poles, where they hit air and <a href="https://en.wikipedia.org/wiki/Aurora" target="_blank" rel="noopener">glow</a>.</span><span class="th">ดวงอาทิตย์สาด<a href="https://th.wikipedia.org/wiki/ลมสุริยะ" target="_blank" rel="noopener">เม็ดประจุ</a>ออกมา สนามแม่เหล็กโลกเบนมันไปที่ขั้วโลก พอชนอากาศก็<a href="https://th.wikipedia.org/wiki/ออโรรา_(ดาราศาสตร์)" target="_blank" rel="noopener">เรืองแสง</a></span></span></span></div>
+    </div>
+  </section>
+</div></div>
+
+<div class="window hot" role="button" tabindex="0"><p><span class="en">Still a<br>miracle.</span><span class="th">ก็ยัง<br>มหัศจรรย์</span></p></div>
+
+<div class="band"><div class="wrap">
+  <section id="back">
+    <h2><span class="en">Say it back</span><span class="th">พูดทวนอีกที</span></h2>
+    <ol class="lines">
+      <li><span class="en">An electron is a fucking magnet. Built in.</span><span class="th">อิเล็กตรอนแม่งเป็นแม่เหล็กในตัว ติดมาแต่เกิด</span></li>
+      <li><span class="en">Most pair off and cancel. An iron atom has four loose.</span><span class="th">ส่วนใหญ่จับคู่แล้วหักล้างกัน อะตอมเหล็กเหลือเดี่ยวสี่ตัว</span></li>
+      <li><span class="en">Loose ones copy their neighbors. Blocks form.</span><span class="th">ตัวเดี่ยวหันตามเพื่อนบ้าน เกิดเป็นก้อน</span></li>
+      <li><span class="en">A big magnet lines the blocks up. Now the whole chunk pulls.</span><span class="th">แม่เหล็กยักษ์จัดแถวทุกก้อน ทีนี้ทั้งชิ้นก็ดูด</span></li>
+      <li><span class="en"><a href="https://en.wikipedia.org/wiki/Electromagnetism" target="_blank" rel="noopener">Electricity and magnets are one thing</a> in two coats of face paint.</span><span class="th"><a href="https://th.wikipedia.org/wiki/ทฤษฎีแม่เหล็กไฟฟ้า" target="_blank" rel="noopener">ไฟฟ้ากับแม่เหล็กคือสิ่งเดียวกัน</a> ทาหน้าสองลาย</span></li>
+    </ol>
+    <p class="sub" style="text-align:center;max-width:none;margin-top:34px"><span class="en">Fucking magnets. That's how they work.</span><span class="th">แม่เหล็กแม่งเจ๋ง มันทำงานแบบนี้แหละ</span></p>
+    <div class="row" style="justify-content:center;margin-top:26px"><button type="button" class="go gold big" id="whoop3"><span class="en">Whoop whoop</span><span class="th">วู้ป วู้ป</span></button></div>
+    <p class="num" id="whoops" style="text-align:center;max-width:none" aria-live="polite"></p>
+    <p class="mcl"><span class="en">Much clown love</span><span class="th">รักนะ จากใจตัวตลก</span></p>
+  </section>
+  <section id="sources">
+    <h2 style="font-size:22px"><span class="en">Sources</span><span class="th">แหล่งข้อมูล</span></h2>
+    <ul class="src">
+      <li>Richard Feynman, <i>Fun to Imagine</i>, BBC, 1983. <a href="https://www.sciencealert.com/watch-richard-feynman-on-why-he-can-t-tell-you-how-magnets-work" target="_blank" rel="noopener">The magnets clip, at ScienceAlert</a>.</li>
+      <li>M. V. Berry &amp; A. K. Geim, <a href="https://doi.org/10.1088/0143-0807/18/4/012" target="_blank" rel="noopener">“Of flying frogs and levitrons”</a>, <i>European Journal of Physics</i> 18, 307 (1997).</li>
+      <li>S. Hahn et al., <a href="https://doi.org/10.1038/s41586-019-1293-1" target="_blank" rel="noopener">“45.5-tesla direct-current magnetic field generated with a high-temperature superconducting magnet”</a>, <i>Nature</i> 570, 496 (2019).</li>
+      <li>C. Kittel, <a href="https://en.wikipedia.org/wiki/Introduction_to_Solid_State_Physics" target="_blank" rel="noopener"><i>Introduction to Solid State Physics</i></a>: Curie points, loose-electron counts, exchange.</li>
+      <li><span class="en">Toy models: the family grid is the two-dimensional <a href="https://en.wikipedia.org/wiki/Ising_model" target="_blank" rel="noopener">Ising model</a> with a small term that favors mixed blocks. The force number in the first toy is in toy units.</span><span class="th">แบบจำลองของเล่น: ตารางแฟมิลี่คือ<a href="https://en.wikipedia.org/wiki/Ising_model" target="_blank" rel="noopener">แบบจำลองไอซิง</a>สองมิติ บวกพจน์เล็ก ๆ ที่ทำให้ก้อนปนกัน ตัวเลขแรงในของเล่นแรกเป็นหน่วยของเล่น</span></li>
+    </ul>
+  </section>
+</div></div>
+</main>
+</div>
+
+<script>
+(function () {
+'use strict';
+const $ = id => document.getElementById(id);
+const rootEl = document.querySelector('[data-root]');
+let L = 'en';
+const T = (en, th) => L === 'th' ? th : en;
+const RMQ = matchMedia('(prefers-reduced-motion: reduce)');
+let MOTION = !RMQ.matches;
+const PI = Math.PI, TAU = PI * 2, clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+const cs = getComputedStyle(document.documentElement), C = {};
+['night', 'tent', 'well', 'pit', 'ink', 'muted', 'rule', 'red', 'redlo', 'blue', 'bluelo', 'green', 'purple', 'gold', 'orange', 'pink', 'steel'].forEach(k => C[k] = cs.getPropertyValue('--' + k).trim());
+function rng(seed) { return function () { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const said = {};
+function say(id, s) { if (said[id] !== s) { said[id] = s; $(id).innerHTML = s; } }
+const on = (id, ev, fn) => $(id).addEventListener(ev, fn);
+const link = (u, s) => '<a href="' + u + '" target="_blank" rel="noopener">' + s + '</a>';
+
+/* frame loop: each job returns true while it wants another frame */
+const jobs = []; let raf = 0;
+function wake() { if (!raf) raf = requestAnimationFrame(frame); }
+function frame(t) { raf = 0; let more = false; for (const j of jobs) { try { if (j(t)) more = true; } catch (e) { console.error(e); } } if (more) wake(); }
+
+/* canvases draw in their own fixed units, scaled to the box */
+const toys = [], seen = new WeakMap();
+const io = 'IntersectionObserver' in window ? new IntersectionObserver(es => { es.forEach(e => { const o = seen.get(e.target); if (o) { o.vis = e.isIntersecting; if (o.vis) { if (o.draw) o.draw(); wake(); } } }); }, { rootMargin: '60px' }) : null;
+function Cv(id, W, H) {
+  const cv = $(id), c = cv.getContext('2d'), o = { cv, c, W, H, vis: !io };
+  o.fit = () => { const d = Math.min(2, devicePixelRatio || 1), w = cv.clientWidth || o.W, pw = Math.round(w * d), ph = Math.round(w * o.H / o.W * d); if (cv.width !== pw || cv.height !== ph) { cv.width = pw; cv.height = ph; } c.setTransform(pw / o.W, 0, 0, ph / o.H, 0, 0); o.u = o.W / w; };
+  o.pt = e => { const r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) * o.W / r.width, y: (e.clientY - r.top) * o.H / r.height }; };
+  cv.style.aspectRatio = W + ' / ' + H; o.fit(); toys.push(o); seen.set(cv, o); if (io) io.observe(cv); return o;
+}
+function rr(c, x, y, w, h, r) { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+function circ(c, x, y, r) { c.beginPath(); c.arc(x, y, r, 0, TAU); }
+function barMag(c, x, y, a, hl, R, letters) {
+  c.save(); c.translate(x, y); c.rotate(a);
+  c.fillStyle = C.blue; rr(c, -hl, -R, hl * 2, R * 2, R * .45); c.fill();
+  c.save(); c.shadowBlur = 0; c.beginPath(); c.rect(0, -R - 2, hl + 2, R * 2 + 4); c.clip(); c.fillStyle = C.red; rr(c, -hl, -R, hl * 2, R * 2, R * .45); c.fill(); c.restore();
+  c.shadowBlur = 0; c.strokeStyle = C.ink; c.lineWidth = Math.max(1.5, R * .15); rr(c, -hl, -R, hl * 2, R * 2, R * .45); c.stroke();
+  c.fillStyle = 'rgba(255,255,255,.3)'; c.fillRect(-hl + R * .5, -R * .66, hl * 2 - R, R * .26);
+  if (letters !== false) { c.fillStyle = C.ink; c.font = '400 ' + Math.round(R * 1.2) + 'px Bungee, Impact, sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle'; [['N', hl * .56], ['S', -hl * .56]].forEach(p => { c.save(); c.translate(p[1], 0); c.rotate(-a); c.fillText(p[0], 0, R * .1); c.restore(); }); }
+  c.restore();
+}
+
+/* sound: only after a tap */
+let AC = null, SOUND = true, unlocked = false;
+addEventListener('pointerdown', () => { unlocked = true; ac(); }, { capture: true });
+addEventListener('keydown', () => { unlocked = true; }, { capture: true });
+function ac() { if (!SOUND || !unlocked) return null; try { if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume(); } catch (e) { AC = null; } return AC; }
+function sweep(f0, f1, t0, dur, type, gain) { const a = ac(); if (!a) return; const o = a.createOscillator(), g = a.createGain(), t = a.currentTime + t0; o.type = type; o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f1, t + dur); g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(gain, t + Math.min(.03, dur / 3)); g.gain.exponentialRampToValueAtTime(.0001, t + dur); o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + dur + .05); }
+function whoopSound() { [0, .32].forEach(t => { sweep(270, 900, t, .24, 'sawtooth', .13); sweep(135, 450, t, .24, 'triangle', .2); }); }
+function clack() { sweep(1900, 260, 0, .07, 'square', .14); }
+
+/* the pop shower */
+const SP = { cv: $('spray'), ps: [], dirty: false }; SP.c = SP.cv.getContext('2d');
+function sprayFit() { if (innerWidth < 2) return; const d = Math.min(2, devicePixelRatio || 1); SP.w = innerWidth; SP.h = innerHeight; SP.cv.width = Math.round(SP.w * d); SP.cv.height = Math.round(SP.h * d); SP.c.setTransform(d, 0, 0, d, 0, 0); }
+function spray(x, y, n) { if (!MOTION) return; const cols = [C.red, C.blue, C.green, C.purple, C.gold, C.orange, C.pink]; for (let i = 0; i < n; i++) { const a = -PI / 2 + (Math.random() - .5) * 1.7, v = 6 + Math.random() * 14; SP.ps.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, r: 2 + Math.random() * 5, c: cols[i % cols.length], life: 1 }); } wake(); }
+jobs.push(() => {
+  const c = SP.c; if (!SP.ps.length) { if (SP.dirty) { c.clearRect(0, 0, SP.w, SP.h); SP.dirty = false; } return false; }
+  c.clearRect(0, 0, SP.w, SP.h); SP.dirty = true;
+  for (const p of SP.ps) { p.vy += .45; p.x += p.vx; p.y += p.vy; p.life -= .012; c.globalAlpha = clamp(p.life * 1.6, 0, 1); c.fillStyle = p.c; c.beginPath(); c.ellipse(p.x, p.y, p.r, p.r * 1.6, Math.atan2(p.vy, p.vx) + PI / 2, 0, TAU); c.fill(); }
+  c.globalAlpha = 1; SP.ps = SP.ps.filter(p => p.life > 0 && p.y < SP.h + 30); return true;
+});
+let WH = 0; try { WH = +(localStorage.getItem('fm-whoops') || 0) || 0; } catch (e) { }
+function renderWhoops() { $('whoops').textContent = WH ? T('Whoops: ' + WH, 'วู้ปไปแล้ว: ' + WH) : ''; }
+function whoop(el) {
+  WH++; try { localStorage.setItem('fm-whoops', WH); } catch (e) { }
+  whoopSound(); let x = innerWidth / 2, y = innerHeight * .7;
+  if (el && el.getBoundingClientRect) { const r = el.getBoundingClientRect(); x = r.left + r.width / 2; y = clamp(r.top + r.height / 2, 60, innerHeight - 20); }
+  spray(x, y, 110); const t = $('toast'); t.classList.remove('pop'); void t.offsetWidth; t.classList.add('pop');
+  SK.boost = 1; SPK.whoop = 1; renderWhoops(); wake();
+}
+
+/* the sky: fixed, behind everything */
+const SK = { cv: $('sky'), ang: 0, boost: 0, last: 0, on: true, lines: [], bulbs: [], sp: 0 }; SK.c = SK.cv.getContext('2d');
+function skyBuild() {
+  const d = Math.min(2, devicePixelRatio || 1), w = SK.w = innerWidth, h = SK.h = innerHeight, u = SK.u = clamp(Math.min(w, h) / 720, .55, 1.25);
+  if (w < 2 || h < 2) { SK.st = null; return; }
+  SK.cv.width = Math.round(w * d); SK.cv.height = Math.round(h * d); SK.c.setTransform(d, 0, 0, d, 0, 0);
+  const st = SK.st = document.createElement('canvas'); st.width = SK.cv.width; st.height = SK.cv.height;
+  const c = st.getContext('2d'); c.setTransform(d, 0, 0, d, 0, 0);
+  const g = c.createLinearGradient(0, 0, 0, h); g.addColorStop(0, '#04020a'); g.addColorStop(.5, '#170a30'); g.addColorStop(.86, '#3b1046'); g.addColorStop(1, '#5a1238');
+  c.fillStyle = g; c.fillRect(0, 0, w, h);
+  const mx = w * .8, my = h * .17, R = 62 * u, pN = { x: mx - R, y: my + R * 1.2 }, pS = { x: mx + R, y: my + R * 1.2 };
+  const B = (x, y) => { let bx = 0, by = 0; for (const pq of [[pN, 1], [pS, -1]]) { const dx = x - pq[0].x, dy = y - pq[0].y, r2 = dx * dx + dy * dy + 80, r3 = r2 * Math.sqrt(r2); bx += pq[1] * dx / r3; by += pq[1] * dy / r3; } return [bx, by]; };
+  const rnd = rng(11); c.lineCap = 'round';
+  for (let i = 0, n = Math.round(w * h / 2300); i < n; i++) {
+    const x = rnd() * w, y = rnd() * h * .9, b = B(x, y), m = Math.hypot(b[0], b[1]), a = Math.atan2(b[1], b[0]), len = .5 + clamp(m * R * R * 9, 0, 1) * 5.5;
+    c.strokeStyle = 'rgba(255,245,230,' + (.2 + .6 * rnd()).toFixed(2) + ')'; c.lineWidth = 1.2 + rnd() * .9;
+    c.beginPath(); c.moveTo(x - Math.cos(a) * len, y - Math.sin(a) * len); c.lineTo(x + Math.cos(a) * len, y + Math.sin(a) * len); c.stroke();
+  }
+  SK.lines = [];
+  for (let k = 0; k < 9; k++) {
+    const a0 = -.35 * PI + k * 1.5 * PI / 8; let x = pN.x + Math.cos(a0) * 10, y = pN.y + Math.sin(a0) * 10; const pts = [[x, y]];
+    for (let s = 0; s < 700; s++) { const b = B(x, y), m = Math.hypot(b[0], b[1]) || 1; x += b[0] / m * 5; y += b[1] / m * 5; pts.push([x, y]); if (Math.hypot(x - pS.x, y - pS.y) < 9 || x < -200 || x > w + 200 || y < -200 || y > h + 200) break; }
+    SK.lines.push(pts);
+  }
+  c.shadowColor = C.purple; c.shadowBlur = 14; c.lineWidth = 2.2;
+  SK.lines.forEach((pts, i) => { c.strokeStyle = 'rgba(182,103,255,' + (.55 - i * .035).toFixed(2) + ')'; c.beginPath(); pts.forEach((p, j) => j ? c.lineTo(p[0], p[1]) : c.moveTo(p[0], p[1])); c.stroke(); });
+  c.lineCap = 'butt'; c.lineWidth = R * .6; c.shadowBlur = 34;
+  c.shadowColor = C.red; c.strokeStyle = C.red; c.beginPath(); c.arc(mx, my, R, PI, 1.5 * PI + .02); c.stroke(); c.beginPath(); c.moveTo(mx - R, my - 1); c.lineTo(mx - R, my + R * .85); c.stroke();
+  c.shadowColor = C.blue; c.strokeStyle = C.blue; c.beginPath(); c.arc(mx, my, R, 1.5 * PI, TAU); c.stroke(); c.beginPath(); c.moveTo(mx + R, my - 1); c.lineTo(mx + R, my + R * .85); c.stroke();
+  c.shadowBlur = 0; c.strokeStyle = C.steel; c.beginPath(); c.moveTo(mx - R, my + R * .85); c.lineTo(mx - R, my + R * 1.2); c.moveTo(mx + R, my + R * .85); c.lineTo(mx + R, my + R * 1.2); c.stroke();
+  const gy = h * .94; c.fillStyle = '#0d0518'; c.fillRect(0, gy, w, h - gy);
+  function tent(cx, tw, th, n) {
+    const ey = gy - th * .42, top = gy - th, sw = tw * 1.16 / n, x0 = cx - tw * .58;
+    c.fillStyle = '#1c0b2e'; c.fillRect(cx - tw / 2, ey, tw, th * .42 + 2);
+    for (let i = 0; i < n; i++) { c.fillStyle = i % 2 ? '#d9cde6' : '#a3162a'; c.beginPath(); c.moveTo(cx, top); c.lineTo(x0 + i * sw, ey); c.lineTo(x0 + (i + 1) * sw, ey); c.closePath(); c.fill(); }
+    for (let i = 0; i < n; i++) { c.fillStyle = i % 2 ? '#a3162a' : '#d9cde6'; c.beginPath(); c.arc(x0 + (i + .5) * sw, ey, sw / 2, 0, PI); c.fill(); }
+    c.fillStyle = '#05020c'; c.beginPath(); c.moveTo(cx - tw * .1, gy); c.lineTo(cx, ey + th * .1); c.lineTo(cx + tw * .1, gy); c.fill();
+    c.strokeStyle = '#d9cde6'; c.lineWidth = 2; c.beginPath(); c.moveTo(cx, top); c.lineTo(cx, top - th * .14); c.stroke();
+    c.fillStyle = C.gold; c.beginPath(); c.moveTo(cx, top - th * .14); c.lineTo(cx + th * .11, top - th * .11); c.lineTo(cx, top - th * .08); c.fill();
+    return [cx, top - th * .02];
+  }
+  const fw = SK.fw = { x: w * .15, y: gy - 168 * u, r: 128 * u };
+  c.strokeStyle = '#6d5a9c'; c.lineWidth = 5 * u; c.beginPath(); c.moveTo(fw.x, fw.y); c.lineTo(fw.x - 58 * u, gy); c.moveTo(fw.x, fw.y); c.lineTo(fw.x + 58 * u, gy); c.stroke();
+  const t1 = tent(w * .53, 330 * u, 250 * u, 10), t2 = tent(w * .87, 210 * u, 170 * u, 8);
+  SK.bulbs = []; const cols = [C.gold, C.red, C.green, C.blue, C.pink];
+  [[[fw.x + fw.r * .7, fw.y - fw.r * .7], t1], [t1, t2], [t2, [w + 30, t2[1] - 40 * u]]].forEach(seg => {
+    const a = seg[0], b = seg[1], n = Math.max(3, Math.round(Math.hypot(b[0] - a[0], b[1] - a[1]) / (30 * u)));
+    c.strokeStyle = 'rgba(255,245,230,.35)'; c.lineWidth = 1.5; c.beginPath();
+    for (let i = 0; i <= n; i++) { const f = i / n, x = a[0] + (b[0] - a[0]) * f, y = a[1] + (b[1] - a[1]) * f + Math.sin(f * PI) * 38 * u; i ? c.lineTo(x, y) : c.moveTo(x, y); if (i && i < n) SK.bulbs.push({ x, y: y + 3 * u, c: cols[SK.bulbs.length % cols.length] }); }
+    c.stroke();
+  });
+  skyDraw(performance.now());
+}
+function skyDraw(t) {
+  if (!SK.st) return;
+  const c = SK.c, u = SK.u, f = SK.fw; c.drawImage(SK.st, 0, 0, SK.w, SK.h);
+  c.lineWidth = 3 * u; c.strokeStyle = 'rgba(255,210,60,.9)'; circ(c, f.x, f.y, f.r); c.stroke(); c.lineWidth = 1.5 * u; circ(c, f.x, f.y, f.r * .8); c.stroke();
+  const cols = [C.red, C.blue, C.green, C.gold, C.purple, C.pink];
+  for (let i = 0; i < 12; i++) { const a = SK.ang + i * TAU / 12, x = f.x + Math.cos(a) * f.r, y = f.y + Math.sin(a) * f.r; c.strokeStyle = 'rgba(255,245,230,.5)'; c.beginPath(); c.moveTo(f.x, f.y); c.lineTo(x, y); c.stroke(); c.fillStyle = cols[i % 6]; rr(c, x - 9 * u, y + 2 * u, 18 * u, 14 * u, 4 * u); c.fill(); }
+  c.fillStyle = C.gold; circ(c, f.x, f.y, 8 * u); c.fill();
+  const step = Math.floor(t / 420);
+  SK.bulbs.forEach((b, i) => { c.globalAlpha = (!MOTION || (step + i) % 3) ? 1 : .25; c.fillStyle = b.c; circ(c, b.x, b.y, 3.6 * u); c.fill(); }); c.globalAlpha = 1;
+  if (MOTION) { c.fillStyle = C.gold; c.shadowColor = C.gold; c.shadowBlur = 12; SK.lines.forEach((pts, i) => { const p = pts[Math.floor(((SK.sp + i * .11) % 1) * (pts.length - 1))]; circ(c, p[0], p[1], 2.6); c.fill(); }); c.shadowBlur = 0; }
+}
+jobs.push(t => { if (!SK.on || !MOTION || document.hidden) return false; if (t - SK.last > 40) { const dt = Math.min(.1, (t - SK.last) / 1000); SK.last = t; SK.ang += dt * (.12 + SK.boost * 2.6); SK.sp = (SK.sp + dt * .12) % 1; SK.boost *= .97; skyDraw(t); } return true; });
+if (io) { const so = new IntersectionObserver(es => { es.forEach(e => e.target._in = e.isIntersecting); SK.on = [].some.call(document.querySelectorAll('.hero,.window'), e => e._in); if (SK.on) wake(); }); document.querySelectorAll('.hero,.window').forEach(e => so.observe(e)); }
+
+/* 1. grab 'em: two bar magnets, four poles, inverse-square each */
+const F = { h: 58, R: 17, drag: null, parts: [], still: 0, touch: false, flash: 0, live: false, f: { fx: 0, fy: 0, tq: 0 }, W: 0 };
+const fv = Cv('fieldCv', 720, 440);
+function poles(m) { const cx = Math.cos(m.a) * F.h, cy = Math.sin(m.a) * F.h; return [{ x: m.x + cx, y: m.y + cy, q: 1 }, { x: m.x - cx, y: m.y - cy, q: -1 }]; }
+function fieldAt(x, y, ps) { let bx = 0, by = 0; for (const p of ps) { const dx = x - p.x, dy = y - p.y, r2 = dx * dx + dy * dy + 90, r3 = r2 * Math.sqrt(r2); bx += p.q * dx / r3; by += p.q * dy / r3; } return [bx, by]; }
+function forceOn(Bm, Am) { const pa = poles(Am); let fx = 0, fy = 0, tq = 0; for (const b of poles(Bm)) { const e = fieldAt(b.x, b.y, pa), Fx = b.q * e[0] * 20000, Fy = b.q * e[1] * 20000; fx += Fx; fy += Fy; tq += (b.x - Bm.x) * Fy - (b.y - Bm.y) * Fx; } return { fx, fy, tq }; }
+function segClosest(p1, p2, p3, p4) {
+  const d1x = p2.x - p1.x, d1y = p2.y - p1.y, d2x = p4.x - p3.x, d2y = p4.y - p3.y, rx = p1.x - p3.x, ry = p1.y - p3.y;
+  const a = d1x * d1x + d1y * d1y, e = d2x * d2x + d2y * d2y, f = d2x * rx + d2y * ry, c = d1x * rx + d1y * ry, b = d1x * d2x + d1y * d2y, den = a * e - b * b;
+  let s = den > 1e-9 ? clamp((b * f - c * e) / den, 0, 1) : 0, t = (b * s + f) / e;
+  if (t < 0) { t = 0; s = clamp(-c / a, 0, 1); } else if (t > 1) { t = 1; s = clamp((b - c) / a, 0, 1); }
+  return { dx: p3.x + d2x * t - (p1.x + d1x * s), dy: p3.y + d2y * t - (p1.y + d1y * s), mx: p1.x + d1x * s, my: p1.y + d1y * s };
+}
+function segPoint(a, b, p) { const dx = b.x - a.x, dy = b.y - a.y, t = clamp(((p.x - a.x) * dx + (p.y - a.y) * dy) / (dx * dx + dy * dy), 0, 1); return Math.hypot(p.x - a.x - dx * t, p.y - a.y - dy * t); }
+function fieldReset() { const W = F.W, H = F.H; F.A = { x: W * .29, y: H * .58, a: 0 }; F.B = { x: W * .73, y: H * .36, a: 0 }; F.parts = []; F.touch = false; F.still = 0; F.live = false; F.flash = 0; }
+function fieldLayout() {
+  const narrow = (fv.cv.clientWidth || 720) < 480, W = narrow ? 440 : 720, H = narrow ? 400 : 440;
+  if (F.W !== W) { F.W = fv.W = W; F.H = fv.H = H; fv.cv.style.aspectRatio = W + ' / ' + H; fieldReset(); F.grid = []; const r = rng(3); for (let y = 14; y < H; y += 24) for (let x = 14; x < W; x += 24) F.grid.push([x + (r() - .5) * 9, y + (r() - .5) * 9]); }
+  fv.fit();
+}
+function fieldStep() {
+  const A = F.A, B = F.B, dragB = F.drag === B, f = F.f = forceOn(B, A); let moved = 0;
+  if (F.live) {
+    const fm = Math.hypot(f.fx, f.fy);
+    if (!dragB && fm > .32) { const v = Math.min(11, fm * .55); B.x += f.fx / fm * v; B.y += f.fy / fm * v; moved += v; }
+    if (Math.abs(f.tq) > (dragB ? 2 : 5)) { const w = clamp(f.tq * .0009, -.14, .14); B.a += w; moved += Math.abs(w) * 30; }
+  }
+  B.x = clamp(B.x, 30, F.W - 30); B.y = clamp(B.y, 30, F.H - 30);
+  const pa = poles(A), pb = poles(B), q = segClosest(pa[1], pa[0], pb[1], pb[0]), d = Math.hypot(q.dx, q.dy), min = F.R * 2 + 3, was = F.touch; F.touch = false;
+  if (d < min) {
+    let nx = q.dx / (d || 1), ny = q.dy / (d || 1);
+    if (d < .01) { nx = B.x - A.x; ny = B.y - A.y; const m = Math.hypot(nx, ny) || 1; nx /= m; ny /= m; }
+    B.x += nx * (min - d); B.y += ny * (min - d); F.touch = f.fx * nx + f.fy * ny < 0;
+    if (F.touch && !was && F.live) { F.flash = 1; F.fxy = [q.mx + nx * min / 2, q.my + ny * min / 2]; clack(); }
+  }
+  return moved;
+}
+function fieldParts() {
+  const ps = poles(F.A).concat(poles(F.B));
+  if (F.parts.length < 46 && Math.random() < .6) { const p = Math.random() < .5 ? ps[0] : ps[2], a = Math.random() * TAU; F.parts.push({ x: p.x + Math.cos(a) * 16, y: p.y + Math.sin(a) * 16, n: 0, dx: 0, dy: 0 }); }
+  F.parts = F.parts.filter(p => { const b = fieldAt(p.x, p.y, ps), m = Math.hypot(b[0], b[1]) || 1; p.dx = b[0] / m; p.dy = b[1] / m; p.x += p.dx * 2.6; p.y += p.dy * 2.6; p.n++; if (p.n > 240 || p.x < -10 || p.x > F.W + 10 || p.y < -10 || p.y > F.H + 10) return false; return !(Math.hypot(p.x - ps[1].x, p.y - ps[1].y) < 13 || Math.hypot(p.x - ps[3].x, p.y - ps[3].y) < 13); });
+}
+function fieldDraw() {
+  const c = fv.c, W = F.W, H = F.H, A = F.A, B = F.B, ps = poles(A).concat(poles(B)), f = F.f;
+  c.fillStyle = C.pit; c.fillRect(0, 0, W, H); c.lineCap = 'round'; c.lineWidth = 1.8;
+  for (const g of F.grid) { const b = fieldAt(g[0], g[1], ps), m = Math.hypot(b[0], b[1]), a = Math.atan2(b[1], b[0]), cx = Math.cos(a) * 6.5, cy = Math.sin(a) * 6.5; c.strokeStyle = 'rgba(255,245,230,' + clamp(.16 + m * 1100, .16, .95).toFixed(2) + ')'; c.beginPath(); c.moveTo(g[0] - cx, g[1] - cy); c.lineTo(g[0] + cx, g[1] + cy); c.stroke(); }
+  c.strokeStyle = C.gold; c.lineWidth = 2.6;
+  for (const p of F.parts) { c.globalAlpha = clamp(p.n / 12, 0, 1); c.beginPath(); c.moveTo(p.x - p.dx * 10, p.y - p.dy * 10); c.lineTo(p.x, p.y); c.stroke(); } c.globalAlpha = 1;
+  [A, B].forEach(m => { c.shadowColor = m === F.drag ? C.gold : 'rgba(182,103,255,.9)'; c.shadowBlur = 22; barMag(c, m.x, m.y, m.a, F.h + F.R * .55, F.R); c.shadowBlur = 0; });
+  const fm = Math.hypot(f.fx, f.fy);
+  if (fm > .3 && !F.touch) { const len = Math.min(88, 24 * Math.log(1 + fm * 2)), ux = f.fx / fm, uy = f.fy / fm, pull = f.fx * (B.x - A.x) + f.fy * (B.y - A.y) < 0, x1 = B.x + ux * len, y1 = B.y + uy * len; c.strokeStyle = c.fillStyle = pull ? C.green : C.orange; c.lineWidth = 7; c.beginPath(); c.moveTo(B.x, B.y); c.lineTo(x1, y1); c.stroke(); c.beginPath(); c.moveTo(x1 + ux * 16, y1 + uy * 16); c.lineTo(x1 - uy * 11, y1 + ux * 11); c.lineTo(x1 + uy * 11, y1 - ux * 11); c.fill(); }
+  if (F.flash > 0) { c.strokeStyle = 'rgba(255,210,60,' + F.flash.toFixed(2) + ')'; c.lineWidth = 6; circ(c, F.fxy[0], F.fxy[1], (1 - F.flash) * 70 + 8); c.stroke(); F.flash -= .06; }
+}
+function fieldSay() {
+  const f = F.f, fm = Math.hypot(f.fx, f.fy), pull = f.fx * (F.B.x - F.A.x) + f.fy * (F.B.y - F.A.y) < 0;
+  say('fieldSay', F.touch ? T('<b>CLACK!</b> North grabbed south. Fucking magnets!', '<b>แป๊ก!</b> ขั้วเหนือดูดขั้วใต้ติดหนึบ แม่เหล็กแม่งเจ๋ง!') : fm < .3 ? T('Too far apart to feel much. Slide one closer.', 'ไกลเกิน แทบไม่รู้สึกอะไร ลากเข้ามาใกล้อีก') : pull ? T('<b>Pulling.</b> Opposite ends want each other, right through thin air.', '<b>ดูดกัน</b> ขั้วต่างกันอยากเข้าหากัน ทะลุอากาศเปล่า ๆ มาเลย') : T('<b>Shoving.</b> Nothing between them but the push. Fucking magnets. Let go and it spins round.', '<b>ผลักกัน</b> ตรงกลางไม่มีอะไรเลยนอกจากแรงผลัก แม่เหล็กแม่งเจ๋ง ปล่อยมือแล้วมันจะหมุนกลับ'));
+  say('fieldNum', F.touch ? T('stuck', 'ติดหนึบ') : fm < .3 ? T('force 0', 'แรง 0') : T('force ', 'แรง ') + fm.toFixed(1) + ' ' + (pull ? T('pull', 'ดูด') : T('shove', 'ผลัก')));
+}
+fv.draw = () => { fieldDraw(); fieldSay(); };
+jobs.push(() => {
+  if (!fv.vis) return false;
+  const moved = fieldStep(); if (moved < .04 && !F.drag) F.still++; else F.still = 0;
+  if (MOTION) fieldParts(); fieldDraw(); fieldSay();
+  return MOTION || !!F.drag || F.still < 20 || F.flash > 0;
+});
+function hit(p) { for (const m of [F.B, F.A]) { const ps = poles(m); if (segPoint(ps[1], ps[0], p) < F.R + 16) return m; } return null; }
+function flip(m, by) { m.a += by || PI; F.live = true; F.still = 0; sweep(500, 950, 0, .07, 'square', .07); wake(); }
+fv.cv.addEventListener('touchstart', e => { const t = e.touches[0]; if (t && hit(fv.pt(t))) e.preventDefault(); }, { passive: false });
+fv.cv.addEventListener('pointerdown', e => {
+  const p = fv.pt(e), m = hit(p);
+  if (!m) { for (let i = 0; i < 14; i++) F.parts.push({ x: p.x + (Math.random() - .5) * 26, y: p.y + (Math.random() - .5) * 26, n: 0, dx: 0, dy: 0 }); wake(); return; }
+  F.drag = m; F.off = { x: m.x - p.x, y: m.y - p.y }; F.mv = 0; F.lp = p; F.live = true; try { fv.cv.setPointerCapture(e.pointerId); } catch (_) { } wake();
+});
+fv.cv.addEventListener('pointermove', e => { if (!F.drag) return; const p = fv.pt(e); F.mv += Math.hypot(p.x - F.lp.x, p.y - F.lp.y); F.lp = p; F.drag.x = clamp(p.x + F.off.x, 30, F.W - 30); F.drag.y = clamp(p.y + F.off.y, 30, F.H - 30); wake(); });
+const fUp = () => { if (!F.drag) return; if (F.mv < 7) flip(F.drag); else if (F.drag === F.B) F.B.a += (Math.random() - .5) * .08; F.drag = null; F.still = 0; wake(); };
+fv.cv.addEventListener('pointerup', fUp); fv.cv.addEventListener('pointercancel', fUp);
+on('fFlip', 'click', () => flip(F.B));
+on('fTurn', 'click', () => flip(F.B, PI / 2));
+on('fReset', 'click', () => { fieldReset(); fv.draw(); wake(); });
+
+/* 2. the shelf: five seats, Hund's rule */
+const EL = [
+  ['Sc', 'Scandium', 'สแกนเดียม', 1, 'One loose. A whisper. No magnet.', 'เหลือเดี่ยวตัวเดียว แรงแค่กระซิบ ไม่เป็นแม่เหล็ก'],
+  ['Ti', 'Titanium', 'ไทเทเนียม', 2, 'Two loose, but <a href="https://en.wikipedia.org/wiki/Paramagnetism" target="_blank" rel="noopener">neighbors won\'t line up</a>. No magnet.', 'เหลือสอง แต่<a href="https://th.wikipedia.org/wiki/พาราแมกเนติก" target="_blank" rel="noopener">เพื่อนบ้านไม่เรียงแถว</a> ไม่เป็นแม่เหล็ก'],
+  ['V', 'Vanadium', 'วาเนเดียม', 3, 'Three loose. Still no lineup.', 'เหลือสาม ก็ยังไม่เรียงแถว'],
+  ['Cr', 'Chromium', 'โครเมียม', 5, 'Five loose. Neighbors <a href="https://en.wikipedia.org/wiki/Antiferromagnetism" target="_blank" rel="noopener">face opposite ways</a> and cancel.', 'เหลือห้า แต่เพื่อนบ้าน<a href="https://en.wikipedia.org/wiki/Antiferromagnetism" target="_blank" rel="noopener">หันสวนทางกัน</a> หักล้างหมด'],
+  ['Mn', 'Manganese', 'แมงกานีส', 5, 'Five loose, the most on this shelf. Its atoms sit too close, so neighbors won\'t face the same way.', 'เหลือห้า มากสุดในชั้นนี้ แต่อะตอมอยู่ชิดกันเกิน เพื่อนบ้านเลยไม่ยอมหันทางเดียวกัน'],
+  ['Fe', 'Iron', 'เหล็ก', 6, '<b><a href="https://en.wikipedia.org/wiki/Ferromagnetism" target="_blank" rel="noopener">MAGNET METAL.</a></b> Four loose, and neighbors copy each other. Fucking magnets start right here.', '<b><a href="https://th.wikipedia.org/wiki/เฟร์โรแมกเนติก" target="_blank" rel="noopener">โลหะแม่เหล็ก</a></b> เหลือสี่ แล้วเพื่อนบ้านยังหันตามกัน แม่เหล็กแม่งเริ่มจากตรงนี้', 1],
+  ['Co', 'Cobalt', 'โคบอลต์', 7, '<b><a href="https://en.wikipedia.org/wiki/Ferromagnetism" target="_blank" rel="noopener">MAGNET METAL.</a></b> Three loose, and neighbors copy.', '<b><a href="https://th.wikipedia.org/wiki/เฟร์โรแมกเนติก" target="_blank" rel="noopener">โลหะแม่เหล็ก</a></b> เหลือสาม เพื่อนบ้านหันตามกัน', 1],
+  ['Ni', 'Nickel', 'นิกเกิล', 8, '<b><a href="https://en.wikipedia.org/wiki/Ferromagnetism" target="_blank" rel="noopener">MAGNET METAL.</a></b> Two loose, and neighbors copy.', '<b><a href="https://th.wikipedia.org/wiki/เฟร์โรแมกเนติก" target="_blank" rel="noopener">โลหะแม่เหล็ก</a></b> เหลือสอง เพื่อนบ้านหันตามกัน', 1],
+  ['Cu', 'Copper', 'ทองแดง', 10, 'Shelf\'s full. All paired. Nothing left over.', 'ชั้นเต็ม จับคู่หมด ไม่เหลือสักตัว'],
+  ['Zn', 'Zinc', 'สังกะสี', 10, 'Full shelf again. All paired.', 'ชั้นเต็มอีกแล้ว จับคู่หมด']
+];
+let ei = 5, shelfDrawn = -1;
+function renderShelf() {
+  const e = EL[ei], n = e[3], up = Math.min(n, 5), dn = Math.max(0, n - 5), loose = up - dn;
+  if (shelfDrawn !== ei) { shelfDrawn = ei; let h = ''; for (let i = 0; i < 5; i++) h += '<div class="seat' + (i < dn ? ' pair' : '') + '">' + (i < up ? '<i style="animation-delay:' + i * 55 + 'ms"></i>' : '') + (i < dn ? '<i class="dn" style="animation-delay:' + (275 + i * 55) + 'ms"></i>' : '') + '</div>'; $('shelf').innerHTML = h; $('shelf').classList.toggle('mag', !!e[6]); const ln = $('looseN'); ln.classList.remove('bump'); void ln.offsetWidth; ln.classList.add('bump'); }
+  $('elName').innerHTML = T(e[1], e[2]) + '<small>' + e[0] + ' · ' + T(n + ' in', 'ใส่ ' + n + ' ตัว') + '</small>';
+  $('looseN').textContent = T(loose + ' loose', 'เหลือเดี่ยว ' + loose);
+  say('shelfSay', T(e[4], e[5]));
+  say('shelfMath', T(n + ' in the shelf. ' + up + ' up, ' + dn + ' flipped. ' + up + ' − ' + dn + ' = <b>' + loose + ' loose</b>.', 'ใส่ ' + n + ' ตัว หัวตั้ง ' + up + ' หัวกลับ ' + dn + ' → ' + up + ' − ' + dn + ' = <b>เหลือเดี่ยว ' + loose + '</b>'));
+}
+on('elPrev', 'click', () => { ei = (ei + EL.length - 1) % EL.length; sweep(520, 380, 0, .06, 'square', .06); renderShelf(); });
+on('elNext', 'click', () => { ei = (ei + 1) % EL.length; sweep(380, 520, 0, .06, 'square', .06); renderShelf(); });
+on('shelf', 'click', e => { const p = e.target.closest('i'); if (!p) return; p.style.animationDelay = '0ms'; p.classList.remove('twirl'); void p.offsetWidth; p.classList.add('twirl'); sweep(700, 1200, 0, .08, 'sine', .08); });
+
+/* 3. the family: 2D Ising, Metropolis flips, a small term that favors mixed blocks */
+const I = { nx: 48, ny: 27, D: .3, hv: 1.1, on: false, M: 0, tick: 0 }; I.N = I.nx * I.ny; I.s = new Int8Array(I.N);
+const iv = Cv('isingCv', 720, 405);
+const isT = () => 2.269 * (+$('heat').value + 273) / 1043;
+function isRand() { I.M = 0; for (let i = 0; i < I.N; i++) { I.s[i] = Math.random() < .5 ? 1 : -1; I.M += I.s[i]; } }
+function isSweep(k) {
+  const nx = I.nx, ny = I.ny, N = I.N, s = I.s, Tm = isT(), h = I.on ? I.hv : 0;
+  for (let n = k * N; n--;) { const i = (Math.random() * N) | 0, x = i % nx, y = (i / nx) | 0, nb = s[y * nx + (x + 1) % nx] + s[y * nx + (x + nx - 1) % nx] + s[((y + 1) % ny) * nx + x] + s[((y + ny - 1) % ny) * nx + x], dE = 2 * s[i] * (nb + h - I.D * I.M / N); if (dE <= 0 || Math.random() < Math.exp(-dE / Tm)) { s[i] = -s[i]; I.M += 2 * s[i]; } }
+}
+function isDraw() {
+  const c = iv.c, nx = I.nx, s = I.s; c.fillStyle = C.pit; c.fillRect(0, 0, 720, 405);
+  for (const v of [1, -1]) { c.fillStyle = v > 0 ? C.red : C.blue; for (let i = 0; i < I.N; i++) if (s[i] === v) c.fillRect((i % nx) * 15 + 1, ((i / nx) | 0) * 15 + 1, 13, 13); }
+}
+function isRead() {
+  const m = Math.abs(I.M) / I.N, tc = +$('heat').value;
+  $('heatLab').textContent = T('Heat: ', 'ความร้อน: ') + tc + '°C';
+  $('isLab').textContent = T('Lined up: ', 'เรียงแถว: ') + Math.round(m * 100) + '%';
+  $('isMeter').style.transform = 'scaleX(' + m.toFixed(3) + ')';
+  say('isSay', tc >= 770 ? T('<b><a href="https://en.wikipedia.org/wiki/Curie_temperature" target="_blank" rel="noopener">Past 770°C.</a></b> Too hot. The whole crowd is thrashing. No magnet.', '<b><a href="https://en.wikipedia.org/wiki/Curie_temperature" target="_blank" rel="noopener">เกิน 770°C</a></b> ร้อนเกิน ทั้งฝูงดิ้นมั่ว ไม่เป็นแม่เหล็ก')
+    : I.on ? (m < .9 ? T('The big magnet picks a side. That block grows.', 'แม่เหล็กยักษ์เลือกข้าง ก้อนฝั่งนั้นโตขึ้นเรื่อย ๆ') : T('<b>All one way.</b> The whole crowd, one direction. Whoop whoop!', '<b>หันทางเดียวกันหมด</b> ทั้งฝูง ทิศเดียวกัน วู้ป วู้ป!'))
+      : m > .6 ? T('Big one\'s gone and <a href="https://en.wikipedia.org/wiki/Remanence" target="_blank" rel="noopener">they stay put</a>. <b>You made a fucking magnet.</b>', 'เอาแม่เหล็กยักษ์ออกแล้ว <a href="https://en.wikipedia.org/wiki/Remanence" target="_blank" rel="noopener">ก็ยังเรียงอยู่</a> <b>ได้แม่เหล็กมาหนึ่งก้อน แม่งเจ๋ง</b>')
+        : T('Blocks of family. Each block lined up, but the blocks cancel. <b>Plain iron.</b>', 'แฟมิลี่เป็นก้อน ๆ ในก้อนเรียงกัน แต่ก้อนต่อก้อนหักล้างกัน <b>เหล็กธรรมดา</b>'));
+}
+iv.draw = () => { isDraw(); isRead(); };
+function isKick() { if (!MOTION) isSweep(150); iv.draw(); wake(); }
+jobs.push(() => { if (!iv.vis || !MOTION) return false; isSweep(2); isDraw(); if (++I.tick % 8 === 0) isRead(); return true; });
+on('heat', 'input', isKick);
+on('bigMag', 'click', () => { I.on = !I.on; $('bigMag').setAttribute('aria-pressed', I.on); sweep(I.on ? 200 : 500, I.on ? 500 : 200, 0, .15, 'sawtooth', .08); isKick(); });
+on('shake', 'click', () => { isRand(); sweep(900, 200, 0, .2, 'sawtooth', .08); isKick(); });
+iv.cv.addEventListener('click', e => { const p = iv.pt(e), cx = (p.x / 15) | 0, cy = (p.y / 15) | 0; for (let y = -4; y <= 4; y++) for (let x = -4; x <= 4; x++) if (x * x + y * y <= 17) { const i = ((cy + y + I.ny) % I.ny) * I.nx + (cx + x + I.nx) % I.nx; I.s[i] = -I.s[i]; I.M += 2 * I.s[i]; } sweep(300, 700, 0, .08, 'square', .07); isKick(); });
+for (let k = 0; k < 8; k++) { isRand(); isSweep(420); if (Math.abs(I.M) / I.N < .3) break; }
+
+/* 4. the chop: 2^n pieces, each with both ends */
+let chops = 0;
+function sizeStr(mm) { const f = x => x >= 100 ? Math.round(x) : x >= 10 ? x.toFixed(1) : x.toFixed(2); if (mm >= 1) return f(mm) + ' mm'; if (mm * 1e3 >= 1) return f(mm * 1e3) + ' μm'; return f(mm * 1e6) + ' nm'; }
+function renderChop() {
+  const n = chops, vis = Math.min(n, 6), k = 1 << vis, bar = $('bar5');
+  if (bar.children.length !== k) { let h = ''; for (let i = 0; i < k; i++) h += '<i>' + (vis <= 3 ? '<b>S</b><b>N</b>' : '') + '</i>'; bar.innerHTML = h; bar.style.gap = [10, 8, 6, 4, 3, 2, 1][vis] + 'px'; }
+  $('lens').hidden = n <= 6; $('lensN').textContent = n > 6 ? '×' + Math.pow(2, n - 6).toLocaleString('en-US') : '';
+  $('stN').textContent = n; $('stP').textContent = Math.pow(2, n).toLocaleString('en-US'); $('stW').textContent = sizeStr(50 / Math.pow(2, n));
+  $('chopGo').disabled = n >= 28; $('chopGo').style.opacity = n >= 28 ? .45 : 1;
+  say('chopSay', n >= 28 ? T('<b>Down to one atom.</b> Its magnet comes from its electrons, and an electron has both ends built in. Nobody has found <a href="https://en.wikipedia.org/wiki/Magnetic_monopole" target="_blank" rel="noopener">a north alone</a>. Fucking magnets, all the way down.', '<b>เหลืออะตอมเดียว</b> แม่เหล็กของมันมาจากอิเล็กตรอน ซึ่งมีสองขั้วติดตัวมาแต่เกิด ยังไม่มีใครเคยเจอ<a href="https://th.wikipedia.org/wiki/แม่เหล็กขั้วเดียว" target="_blank" rel="noopener">ขั้วเหนือโดด ๆ</a> แม่เหล็กแม่งเป็นแม่เหล็กลึกลงไปถึงก้น')
+    : n >= 19 ? T('Virus-sized. Still both ends.', 'เล็กเท่าไวรัส ก็ยังครบสองขั้ว') : n >= 14 ? T('Germ-sized. Still both ends.', 'เล็กเท่าเชื้อโรค ก็ยังครบสองขั้ว') : n >= 10 ? T('Thin as a hair now. Still both ends.', 'บางเท่าเส้นผมแล้ว ก็ยังครบสองขั้ว')
+      : n >= 7 ? T('Too small to draw. The glass shows one piece.', 'เล็กเกินจะวาด แว่นขยายโชว์ให้ดูหนึ่งชิ้น') : n >= 1 ? T('Each piece has its own N and its own S.', 'ทุกชิ้นมี N กับ S ของตัวเอง') : T('A 5 cm bar. Swing the hatchet.', 'แท่งยาว 5 ซม. เหวี่ยงขวานเลย'));
+  say('chopMath', T('pieces = 2ⁿ. ' + n + ' chops: <b>2^' + n + ' = ' + Math.pow(2, n).toLocaleString('en-US') + '</b>. A 5 cm bar is one atom wide after 28.', 'จำนวนชิ้น = 2ⁿ สับ ' + n + ' ครั้ง: <b>2^' + n + ' = ' + Math.pow(2, n).toLocaleString('en-US') + '</b> แท่ง 5 ซม. เหลือกว้างอะตอมเดียวหลังสับ 28 ครั้ง'));
+}
+function chop() { if (chops >= 28) return; chops++; sweep(900, 110, 0, .1, 'triangle', .25); ['hatchet', 'bar5'].forEach((id, i) => { const e = $(id), k = i ? 'hit' : 'swing'; e.classList.remove(k); void e.getBoundingClientRect(); e.classList.add(k); }); renderChop(); }
+on('chopGo', 'click', chop); on('hatchet', 'click', chop);
+on('chopReset', 'click', () => { chops = 0; renderChop(); });
+
+/* 5. back up: 1/d^4 next to 1/d^2 */
+const dv = Cv('distCv', 720, 300);
+function distDraw() {
+  const c = dv.c, d = +$('dist').value, u = dv.u, yb = 300 - 12 - 17 * u, yt = 112, x0 = 56, x1 = 690, X = v => x0 + (v - 1) / 3 * (x1 - x0), Y = v => yb - v * (yb - yt), pull = 1 / Math.pow(d, 4);
+  c.fillStyle = C.pit; c.fillRect(0, 0, 720, 300);
+  c.strokeStyle = C.rule; c.lineWidth = 4; c.beginPath(); c.moveTo(24, 78); c.lineTo(696, 78); c.stroke();
+  const gap = 30 + (d - 1) * 125, bx = 148 + gap + 55; barMag(c, 93, 52, 0, 55, 16); barMag(c, bx, 52, 0, 55, 16);
+  const th = 2 + 11 * Math.sqrt(pull), mid = 148 + gap / 2, al = Math.min(gap / 2 - 6, 60);
+  c.globalAlpha = .35 + .65 * Math.sqrt(pull); c.strokeStyle = c.fillStyle = C.green; c.lineWidth = th;
+  [[-1, mid - 3], [1, mid + 3]].forEach(a => { const s = a[0], tip = a[1]; c.beginPath(); c.moveTo(tip - s * 0, 52); c.lineTo(tip + s * al, 52); c.stroke(); c.beginPath(); c.moveTo(tip - s * 2, 52); c.lineTo(tip + s * 10, 52 - th - 3); c.lineTo(tip + s * 10, 52 + th + 3); c.fill(); }); c.globalAlpha = 1;
+  c.strokeStyle = C.rule; c.lineWidth = 2; c.fillStyle = C.muted; c.font = '700 ' + Math.round(14 * u) + 'px "Atkinson Hyperlegible", sans-serif'; c.textAlign = 'center'; c.textBaseline = 'top';
+  for (let v = 1; v <= 4; v++) { c.beginPath(); c.moveTo(X(v), yt); c.lineTo(X(v), yb); c.stroke(); c.fillText('×' + v, X(v), yb + 5); }
+  c.beginPath(); c.moveTo(x0, yb); c.lineTo(x1, yb); c.stroke();
+  [[2, C.blue, 3, [9, 8]], [4, C.red, 5, []]].forEach(k => { c.strokeStyle = k[1]; c.lineWidth = k[2]; c.setLineDash(k[3]); c.shadowColor = k[1]; c.shadowBlur = k[0] === 4 ? 12 : 0; c.beginPath(); for (let v = 1; v <= 4.001; v += .03) { const y = Y(1 / Math.pow(v, k[0])); v === 1 ? c.moveTo(X(v), y) : c.lineTo(X(v), y); } c.stroke(); }); c.setLineDash([]); c.shadowBlur = 0;
+  c.strokeStyle = C.gold; c.lineWidth = 2; c.beginPath(); c.moveTo(X(d), yt - 6); c.lineTo(X(d), yb); c.stroke();
+  [[2, C.blue], [4, C.red]].forEach(k => { c.fillStyle = k[1]; c.strokeStyle = C.ink; c.lineWidth = 3; circ(c, X(d), Y(1 / Math.pow(d, k[0])), 9); c.fill(); c.stroke(); });
+}
+function distRead() {
+  const d = +$('dist').value, p4 = 100 / Math.pow(d, 4), p2 = 100 / Math.pow(d, 2), f = v => v >= 10 ? Math.round(v) : +v.toFixed(1);
+  $('distLab').textContent = T('Distance: ×', 'ระยะ: ×') + d.toFixed(2);
+  say('distSay', T('Pull at this distance: <b>' + f(p4) + '%</b> of where it started. Light from a bulb: ' + f(p2) + '%.', 'แรงดูดที่ระยะนี้เหลือ <b>' + f(p4) + '%</b> ของตอนเริ่ม ส่วนแสงจากหลอดไฟเหลือ ' + f(p2) + '%'));
+  say('distMath', '1 ÷ ' + d.toFixed(2) + '⁴ = <b>1/' + f(Math.pow(d, 4)) + '</b> &nbsp;·&nbsp; 1 ÷ ' + d.toFixed(2) + '² = 1/' + f(d * d));
+}
+dv.draw = () => { distDraw(); distRead(); };
+on('dist', 'input', dv.draw);
+
+/* 6. wrap a nail: B = mu0 * n * I, times about 90 with the nail, capped where iron is full */
+const EM = { nail: true, ph: 0 }, MU0 = 4e-7 * PI, ev = Cv('emCv', 720, 300), pile = (() => { const r = rng(5), a = []; for (let i = 0; i < 24; i++) a.push([560 + r() * 140, 268 + r() * 18, (r() - .5) * 2.6]); return a; })();
+function emB() { const w = +$('wraps').value, a = +$('amps').value, b0 = MU0 * (w / .1) * a; if (!EM.nail) return { b: b0, sat: false, w, a }; const b = b0 * 90; return b > 2.15 ? { b: 2.15 + b0, sat: true, w, a } : { b, sat: false, w, a }; }
+const fmtT = b => b < 1e-3 ? Math.round(b * 1e6) + ' μT' : b < 1 ? (b * 1e3).toFixed(b < .01 ? 2 : b < .1 ? 1 : 0) + ' mT' : b.toFixed(2) + ' T';
+function words(n) { const us = L === 'th' ? [[1e12, ' ล้านล้าน'], [1e9, ' พันล้าน'], [1e6, ' ล้าน']] : [[1e12, ' trillion'], [1e9, ' billion'], [1e6, ' million']]; for (const k of us) if (n >= k[0]) return +(n / k[0]).toPrecision(2) + k[1]; return (n >= 100 ? Math.round(n / 10) * 10 : n >= 10 ? Math.round(n) : +n.toFixed(1)).toLocaleString('en-US'); }
+function clip(c, x, y, a) { c.save(); c.translate(x, y); c.rotate(a); c.strokeStyle = C.steel; c.lineWidth = 2; rr(c, -4, -8, 8, 16, 4); c.stroke(); c.beginPath(); c.moveTo(0, -4); c.lineTo(0, 5); c.stroke(); c.restore(); }
+function emDraw() {
+  const c = ev.c, o = emB(), k = Math.sqrt(Math.min(1, o.b / 2.15)), nv = clamp(Math.round(o.w / 12), 4, 40), y = 118, xa = 214, xb = 500;
+  c.fillStyle = C.pit; c.fillRect(0, 0, 720, 300);
+  if (o.b > 0) [[EM.nail ? 596 : 512, C.red], [EM.nail ? 140 : 202, C.blue]].forEach(p => { const g = c.createRadialGradient(p[0], y, 2, p[0], y, 26 + 120 * k); g.addColorStop(0, p[1]); g.addColorStop(1, 'rgba(0,0,0,0)'); c.globalAlpha = .25 + .55 * k; c.fillStyle = g; c.fillRect(p[0] - 150, y - 150, 300, 300); }); c.globalAlpha = 1;
+  const loop = (front) => { c.strokeStyle = front ? C.orange : '#8a4a12'; c.lineWidth = front ? 4.5 : 3.5; for (let i = 0; i < nv; i++) { const x = xa + (xb - xa) * i / (nv - 1); c.beginPath(); c.ellipse(x, y, 8, 31, 0, front ? -PI / 2 : PI / 2, front ? PI / 2 : PI * 1.5); c.stroke(); } };
+  loop(false);
+  if (EM.nail) { c.fillStyle = C.steel; c.strokeStyle = C.ink; c.lineWidth = 2; c.beginPath(); c.moveTo(150, y - 10); c.lineTo(552, y - 10); c.lineTo(594, y); c.lineTo(552, y + 10); c.lineTo(150, y + 10); c.closePath(); c.fill(); c.stroke(); rr(c, 138, y - 21, 12, 42, 3); c.fill(); c.stroke(); c.fillStyle = 'rgba(255,255,255,.45)'; c.fillRect(154, y - 7, 392, 3); }
+  else { c.strokeStyle = C.rule; c.lineWidth = 2; c.setLineDash([8, 8]); c.beginPath(); c.moveTo(150, y); c.lineTo(594, y); c.stroke(); c.setLineDash([]); }
+  loop(true);
+  c.strokeStyle = C.orange; c.lineWidth = 4; c.lineJoin = 'round'; const wires = [[[xa, y + 31], [xa, 236], [300, 236]], [[420, 236], [xb, 236], [xb, y + 31]]];
+  wires.forEach(w => { c.beginPath(); w.forEach((p, i) => i ? c.lineTo(p[0], p[1]) : c.moveTo(p[0], p[1])); c.stroke(); });
+  c.fillStyle = '#1b1230'; c.strokeStyle = C.ink; c.lineWidth = 3; rr(c, 300, 213, 120, 46, 9); c.fill(); c.stroke(); c.fillStyle = C.gold; c.fillRect(420, 226, 8, 20);
+  c.strokeStyle = C.red; c.lineWidth = 5; c.beginPath(); c.moveTo(384, 236); c.lineTo(404, 236); c.moveTo(394, 226); c.lineTo(394, 246); c.stroke(); c.strokeStyle = C.blue; c.beginPath(); c.moveTo(316, 236); c.lineTo(336, 236); c.stroke();
+  if (o.a > 0 && MOTION) { c.fillStyle = C.gold; wires.forEach(w => { let len = 0; const seg = []; for (let i = 1; i < w.length; i++) { const l = Math.hypot(w[i][0] - w[i - 1][0], w[i][1] - w[i - 1][1]); seg.push(l); len += l; } for (let q = 0; q < 5; q++) { let s = ((EM.ph + q / 5) % 1) * len, i = 0; while (s > seg[i]) { s -= seg[i]; i++; } const f = s / seg[i]; circ(c, w[i + 1][0] + (w[i][0] - w[i + 1][0]) * f, w[i + 1][1] + (w[i][1] - w[i + 1][1]) * f, 4); c.fill(); } }); }
+  const n = EM.clips = Math.min(24, Math.floor(o.b * 1e3 / 25)), ox = EM.nail ? 600 : 514, oy = EM.nail ? y + 14 : y + 44;
+  for (let i = 0; i < 24; i++) { if (i < n) clip(c, ox + ((i / 8) | 0) * 15 - 8, oy + (i % 8) * 17, i % 2 ? .22 : -.22); else clip(c, pile[i][0], pile[i][1], pile[i][2]); }
+}
+function emRead() {
+  const o = emB(), r = o.b / .005;
+  $('wrapsLab').textContent = T('Wraps: ', 'จำนวนรอบ: ') + o.w; $('ampsLab').textContent = T('Amps: ', 'แอมป์: ') + o.a.toFixed(1);
+  say('emNum', fmtT(o.b) + ' · ' + T('clips ', 'คลิป ') + (EM.clips || 0));
+  say('emSay', o.a === 0 ? T('No current, no magnet. A fucking magnet with an off switch.', 'ไม่มีกระแส ก็ไม่มีแม่เหล็ก แม่เหล็กแม่งมีสวิตช์ปิดได้ด้วย')
+    : o.sat ? T('<b><a href="https://en.wikipedia.org/wiki/Saturation_(magnetic)" target="_blank" rel="noopener">The nail\'s full.</a></b> Every atom in it is already lined up. About 2 tesla is all iron gives.', '<b><a href="https://en.wikipedia.org/wiki/Saturation_(magnetic)" target="_blank" rel="noopener">ตะปูเต็มแล้ว</a></b> อะตอมทุกตัวในตะปูเรียงแถวหมดแล้ว เหล็กให้ได้ราว 2 เทสลา')
+      : !EM.nail ? T('Bare coil. Weak. Now slide the nail in.', 'ขดลวดเปล่า ๆ แรงน้อย ทีนี้ลองใส่ตะปู')
+        : r >= 1 ? T('As strong as <b>' + words(r) + '</b> fridge magnets. Double the wraps or the amps: double the field.', 'แรงเท่าแม่เหล็กติดตู้เย็น <b>' + words(r) + '</b> อัน เพิ่มรอบหรือแอมป์สองเท่า สนามก็สองเท่า') : T('Weaker than a fridge magnet. Give it more wraps or more amps.', 'อ่อนกว่าแม่เหล็กติดตู้เย็น เพิ่มรอบหรือเพิ่มแอมป์ดู'));
+  say('emMath', '4π×10⁻⁷ × (' + o.w + ' ÷ 0.1 m) × ' + o.a.toFixed(1) + ' A' + (EM.nail ? ' × 90' : '') + (o.sat ? T(' → full at ', ' → เต็มที่ ') : ' = ') + '<b>' + fmtT(o.b) + '</b>');
+}
+ev.draw = () => { emDraw(); emRead(); };
+jobs.push(() => { if (!ev.vis || !MOTION || +$('amps').value === 0) return false; EM.ph = (EM.ph + .004 * +$('amps').value) % 1; emDraw(); return true; });
+['wraps', 'amps'].forEach(id => on(id, 'input', () => { ev.draw(); wake(); }));
+on('nail', 'click', () => { EM.nail = !EM.nail; $('nail').setAttribute('aria-pressed', EM.nail); sweep(EM.nail ? 300 : 600, EM.nail ? 600 : 300, 0, .1, 'square', .07); ev.draw(); wake(); });
+
+/* 7a. shake a magnet through a coil: volts = wraps * d(flux)/dt */
+const FA = { x: 150, px: 150, lvl: 0, peak: 0, hist: new Float32Array(320), hi: 0, shake: false, ph: -1.2, drag: false, moved: false };
+const av = Cv('farCv', 720, 300), phi = x => Math.pow(1 + Math.pow((x - 360) / 75, 2), -1.5);
+function farStep(t) {
+  const dt = clamp((t - (FA.last || t)) / 1000, .004, .05); FA.last = t;
+  if (FA.shake && !FA.drag) { FA.ph += +$('fSpeed').value * dt; FA.x = 360 + 250 * Math.sin(FA.ph); }
+  const emf = -(phi(FA.x) - phi(FA.px)) / dt * +$('fWraps').value * .01; FA.px = FA.x;
+  FA.lvl = FA.lvl * .86 + Math.abs(emf) * .14; FA.peak = Math.max(FA.peak * .993, Math.abs(emf)); FA.hist[FA.hi] = emf; FA.hi = (FA.hi + 1) % 320; if (Math.abs(emf) > .05) FA.moved = true;
+}
+function farDraw() {
+  const c = av.c, y = 128, b = clamp(FA.lvl / 5, 0, 1);
+  c.fillStyle = C.pit; c.fillRect(0, 0, 720, 300);
+  const loop = front => { c.strokeStyle = front ? C.orange : '#8a4a12'; c.lineWidth = front ? 5 : 4; for (let i = 0; i < 9; i++) { c.beginPath(); c.ellipse(300 + i * 15, y, 10, 44, 0, front ? -PI / 2 : PI / 2, front ? PI / 2 : PI * 1.5); c.stroke(); } };
+  loop(false); c.shadowColor = FA.drag ? C.gold : 'rgba(182,103,255,.9)'; c.shadowBlur = 18; barMag(c, FA.x, y, 0, 60, 15); c.shadowBlur = 0; loop(true);
+  c.strokeStyle = C.orange; c.lineWidth = 4; c.lineJoin = 'round'; c.beginPath(); c.moveTo(300, y - 44); c.lineTo(300, 62); c.lineTo(348, 62); c.moveTo(420, y - 44); c.lineTo(420, 62); c.lineTo(372, 62); c.stroke();
+  if (b > .02) { const g = c.createRadialGradient(360, 34, 4, 360, 34, 30 + 90 * b); g.addColorStop(0, 'rgba(255,230,120,' + (.5 + .5 * b).toFixed(2) + ')'); g.addColorStop(1, 'rgba(255,210,60,0)'); c.fillStyle = g; c.fillRect(220, -80, 280, 240); }
+  c.fillStyle = 'rgba(255,' + Math.round(200 + 45 * b) + ',' + Math.round(60 + 120 * b) + ',' + (.18 + .82 * b).toFixed(2) + ')'; c.strokeStyle = C.ink; c.lineWidth = 2.5; circ(c, 360, 32, 22); c.fill(); c.stroke();
+  c.fillStyle = C.steel; rr(c, 348, 52, 24, 16, 3); c.fill(); c.stroke();
+  const sy = 244, sc = 34 / Math.max(3, FA.peak);
+  c.strokeStyle = C.rule; c.lineWidth = 2; rr(c, 30, sy - 42, 660, 84, 8); c.stroke(); c.beginPath(); c.moveTo(30, sy); c.lineTo(690, sy); c.stroke();
+  c.strokeStyle = C.green; c.lineWidth = 3; c.shadowColor = C.green; c.shadowBlur = 8; c.beginPath(); for (let i = 0; i < 320; i++) { const v = FA.hist[(FA.hi + i) % 320], x = 36 + i * 648 / 319, yy = sy - clamp(v * sc, -38, 38); i ? c.lineTo(x, yy) : c.moveTo(x, yy); } c.stroke(); c.shadowBlur = 0;
+}
+function farRead() {
+  $('fSpeedLab').textContent = T('Speed: ', 'ความเร็ว: ') + (+$('fSpeed').value).toFixed(1); $('fWrapsLab').textContent = T('Wraps: ', 'จำนวนรอบ: ') + $('fWraps').value;
+  say('farNum', T('peak ', 'สูงสุด ') + FA.peak.toFixed(1) + T(' toy volts', ' โวลต์ของเล่น'));
+  say('farSay', FA.moved ? T('In, the current runs one way. Out, it runs back. That back-and-forth is <a href="https://en.wikipedia.org/wiki/Alternating_current" target="_blank" rel="noopener">AC</a>, the kind in the wall.', 'ตอนเข้า กระแสไหลทางหนึ่ง ตอนออก ไหลย้อนกลับ ไปกลับแบบนี้คือ<a href="https://th.wikipedia.org/wiki/ไฟฟ้ากระแสสลับ" target="_blank" rel="noopener">ไฟ AC</a> แบบเดียวกับที่ปลั๊กบ้าน') : T('A magnet sitting still makes nothing. It has to move.', 'แม่เหล็กอยู่นิ่ง ๆ ไม่เกิดอะไรเลย ต้องขยับ'));
+}
+av.draw = () => { farDraw(); farRead(); };
+let farTick = 0;
+jobs.push(t => { if (!av.vis) { FA.last = 0; return false; } const act = FA.shake || FA.drag || FA.lvl > .02; if (!act) { FA.last = 0; return false; } farStep(t); farDraw(); if (++farTick % 10 === 0) farRead(); return true; });
+const farHit = p => Math.abs(p.x - FA.x) < 90 && Math.abs(p.y - 128) < 60;
+av.cv.addEventListener('touchstart', e => { const t = e.touches[0]; if (t && farHit(av.pt(t))) e.preventDefault(); }, { passive: false });
+av.cv.addEventListener('pointerdown', e => { const p = av.pt(e); if (!farHit(p)) { FA.x = clamp(p.x, 80, 640); FA.lvl = Math.max(FA.lvl, .03); wake(); return; } FA.drag = true; FA.off = FA.x - p.x; try { av.cv.setPointerCapture(e.pointerId); } catch (_) { } wake(); });
+av.cv.addEventListener('pointermove', e => { if (!FA.drag) return; FA.x = clamp(av.pt(e).x + FA.off, 80, 640); wake(); });
+const farUp = () => { if (FA.drag) { FA.drag = false; if (FA.shake) FA.ph = Math.asin(clamp((FA.x - 360) / 250, -1, 1)); wake(); } };
+av.cv.addEventListener('pointerup', farUp); av.cv.addEventListener('pointercancel', farUp);
+on('fShake', 'click', () => { FA.shake = !FA.shake; $('fShake').setAttribute('aria-pressed', FA.shake); if (FA.shake) FA.ph = Math.asin(clamp((FA.x - 360) / 250, -1, 1)); wake(); });
+['fSpeed', 'fWraps'].forEach(id => on(id, 'input', () => { farRead(); wake(); }));
+
+/* 7b. the speaker: the same trick backwards */
+const SPK = { on: false, ph: 0, whoop: 0, o: null, last: 0 }, sv = Cv('spkCv', 720, 280);
+function spkDraw(d, loud) {
+  const c = sv.c, y = 140; c.fillStyle = C.pit; c.fillRect(0, 0, 720, 280);
+  if (loud > 0) { c.lineWidth = 5; for (let k = 0; k < 5; k++) { const r = 60 + ((k * 62 + SPK.ph * 22) % 310); c.strokeStyle = 'rgba(88,255,107,' + (loud * (1 - r / 380)).toFixed(2) + ')'; c.beginPath(); c.arc(398, y, r, -.62, .62); c.stroke(); } }
+  c.strokeStyle = C.steel; c.lineWidth = 5; c.beginPath(); c.moveTo(214, 62); c.lineTo(404, 26); c.moveTo(214, 218); c.lineTo(404, 254); c.stroke();
+  c.fillStyle = C.steel; c.strokeStyle = C.ink; c.lineWidth = 2.5; rr(c, 112, 62, 24, 156, 4); c.fill(); c.stroke(); rr(c, 136, 116, 86, 48, 4); c.fill(); c.stroke(); rr(c, 200, 62, 16, 46, 3); c.fill(); c.stroke(); rr(c, 200, 172, 16, 46, 3); c.fill(); c.stroke();
+  [[62, 1], [172, -1]].forEach(m => { c.fillStyle = C.red; c.fillRect(136, m[0], 32, 46); c.fillStyle = C.blue; c.fillRect(168, m[0], 32, 46); c.strokeStyle = C.ink; c.strokeRect(136, m[0], 64, 46); });
+  const x = 196 + d;
+  c.fillStyle = 'rgba(255,245,230,.92)'; c.strokeStyle = C.ink; c.lineWidth = 2.5; c.beginPath(); c.moveTo(x + 40, 112); c.lineTo(394 + d * .5, 34); c.lineTo(404 + d * .5, 34); c.lineTo(x + 52, y); c.lineTo(404 + d * .5, 246); c.lineTo(394 + d * .5, 246); c.lineTo(x + 40, 168); c.closePath(); c.fill(); c.stroke();
+  c.beginPath(); c.arc(x + 44, y, 30, -PI / 2, PI / 2); c.fill(); c.stroke();
+  c.strokeStyle = C.orange; c.lineWidth = 3.5; for (let i = 0; i < 7; i++) { c.beginPath(); c.moveTo(x + i * 6, 109); c.lineTo(x + i * 6, 115); c.moveTo(x + i * 6, 165); c.lineTo(x + i * 6, 171); c.stroke(); }
+  c.strokeStyle = C.ink; c.lineWidth = 2; c.strokeRect(x - 3, 108, 42, 8); c.strokeRect(x - 3, 164, 42, 8);
+  c.strokeStyle = C.pink; c.lineWidth = 4; [[30, -1], [250, 1]].forEach(s => { c.beginPath(); c.arc(404 + d * .25, s[0] + (s[1] < 0 ? 4 : -4), 9, s[1] < 0 ? PI : 0, s[1] < 0 ? TAU : PI); c.stroke(); });
+}
+function spkRead() {
+  const f = +$('hz').value; $('hzLab').textContent = f + ' Hz';
+  say('spkSay', SPK.on ? T('<b>' + f + ' Hz.</b> The cone punches out and back ' + f + ' times a second. That\'s the thump in your chest at the show. Fucking magnets. Drawn slow so eyes can follow.', '<b>' + f + ' Hz</b> กรวยชกออกแล้วดึงกลับ ' + f + ' ครั้งต่อวินาที นั่นคือแรงกระแทกหน้าอกหน้าเวที แม่เหล็กแม่งเจ๋ง ภาพนี้วาดให้ช้าเพื่อให้ตามองทัน') : T('The coil sits in the gap of the magnet, waiting for current.', 'ขดลวดนั่งรออยู่ในช่องของแม่เหล็ก รอกระแสไฟ'));
+}
+sv.draw = () => { spkDraw(0, 0); spkRead(); };
+function bassOff() { SPK.on = false; $('bassGo').setAttribute('aria-pressed', 'false'); if (SPK.o) { try { SPK.g.gain.setTargetAtTime(.0001, AC.currentTime, .03); SPK.o.forEach(o => o.stop(AC.currentTime + .25)); } catch (e) { } SPK.o = null; } spkRead(); wake(); }
+function bassOn() {
+  SPK.on = true; SPK.until = performance.now() + 6000; $('bassGo').setAttribute('aria-pressed', 'true'); const a = ac(), f = +$('hz').value;
+  if (a) { const o1 = a.createOscillator(), o2 = a.createOscillator(), g = SPK.g = a.createGain(), g2 = a.createGain(); o1.type = 'sine'; o2.type = 'triangle'; o1.frequency.value = f; o2.frequency.value = f * 2; g2.gain.value = .3; g.gain.setValueAtTime(.0001, a.currentTime); g.gain.exponentialRampToValueAtTime(.4, a.currentTime + .05); o1.connect(g); o2.connect(g2); g2.connect(g); g.connect(a.destination); o1.start(); o2.start(); SPK.o = [o1, o2]; }
+  spkRead(); wake();
+}
+jobs.push(t => {
+  if (!SPK.on && SPK.whoop <= 0) return false;
+  if (SPK.on && t > SPK.until) { bassOff(); return false; }
+  const dt = Math.min(.05, (t - (SPK.last || t)) / 1000); SPK.last = t;
+  if (SPK.whoop > 0) { SPK.whoop -= dt * 1.5; SPK.ph += dt * (14 + 40 * (1 - SPK.whoop)); } else SPK.ph += dt * TAU * +$('hz').value / 25;
+  if (sv.vis) spkDraw(13 * Math.sin(SPK.ph), SPK.on ? .9 : clamp(SPK.whoop, 0, 1));
+  if (!SPK.on && SPK.whoop <= 0) { SPK.last = 0; if (sv.vis) spkDraw(0, 0); return false; }
+  return true;
+});
+on('bassGo', 'click', () => SPK.on ? bassOff() : bassOn());
+on('hz', 'input', () => { if (SPK.o) { const f = +$('hz').value; SPK.o[0].frequency.value = f; SPK.o[1].frequency.value = f * 2; SPK.until = performance.now() + 6000; } spkRead(); });
+sv.cv.addEventListener('click', () => SPK.on ? bassOff() : bassOn());
+
+/* 8. the strong ladder: each tick is ten times the last */
+const LAD = [
+  [1e-12, '0.000 000 000 001 T', 'Your brain', 'สมองของคุณ', 'Thoughts are tiny currents. Tiny currents make tiny magnets. Your head is a fucking magnet.', 'ความคิดคือกระแสไฟจิ๋ว กระแสไฟจิ๋วก็สร้างแม่เหล็กจิ๋ว หัวเราแม่งก็เป็นแม่เหล็ก'],
+  [5e-5, '0.000 05 T', 'The Earth', 'โลก', '<a href="https://en.wikipedia.org/wiki/Dynamo_theory" target="_blank" rel="noopener">Liquid iron churning in the core.</a> The whole planet is one fucking magnet, and it swings a compass needle anywhere on it.', '<a href="https://th.wikipedia.org/wiki/ทฤษฎีไดนาโม" target="_blank" rel="noopener">เหล็กเหลวปั่นป่วนอยู่ในแกนโลก</a> ทั้งดาวแม่งเป็นแม่เหล็กก้อนเดียว หมุนเข็มทิศได้ทุกที่บนดาว'],
+  [5e-3, '0.005 T', 'Fridge magnet', 'แม่เหล็กติดตู้เย็น', 'Pins the flyer for the show to the fridge. This one is the yardstick.', 'หนีบใบปลิวงานโชว์ไว้กับตู้เย็น อันนี้คือไม้วัด'],
+  [1, '1 T', 'Neodymium magnet', 'แม่เหล็กนีโอไดเมียม', 'Thumb-sized and it hangs a hammer. In your earbuds and your speakers.', 'ขนาดเท่านิ้วโป้งก็แขวนค้อนได้ อยู่ในหูฟังกับลำโพง'],
+  [3, '3 T', 'MRI scanner', 'เครื่อง MRI', 'Lines up the hydrogen in your body, then listens to it ring.', 'จัดแถวไฮโดรเจนในร่างกาย แล้วฟังเสียงมันสั่น'],
+  [16, '16 T', 'The floating frog', 'กบลอยได้', '1997. A live frog hung in midair. <a href="https://en.wikipedia.org/wiki/Diamagnetism" target="_blank" rel="noopener">Water pushes back</a> against a strong field, and a frog is mostly water.', 'ปี 1997 กบเป็น ๆ ลอยค้างกลางอากาศ <a href="https://th.wikipedia.org/wiki/ไดอะแมกเนติก" target="_blank" rel="noopener">น้ำดันสวน</a>สนามแรง ๆ และตัวกบส่วนใหญ่เป็นน้ำ'],
+  [45.5, '45.5 T', 'Tallahassee lab magnet', 'แม่เหล็กห้องแล็บที่แทลลาแฮสซี', '2019. A steady field of 45.5 tesla.', 'ปี 2019 สนามนิ่ง ๆ 45.5 เทสลา'],
+  [1e11, '100 000 000 000 T', 'Magnetar', 'แมกนีทาร์', 'A dead star the size of a city. One fucking magnet, with the strongest fields anybody has measured.', 'ดาวที่ตายแล้ว ขนาดเท่าเมือง แม่งเป็นแม่เหล็กทั้งดวง สนามแรงที่สุดเท่าที่เคยมีใครวัดได้']
+];
+const LADU = [['https://en.wikipedia.org/wiki/Magnetoencephalography', 'https://en.wikipedia.org/wiki/Magnetoencephalography'], ['https://en.wikipedia.org/wiki/Earth%27s_magnetic_field', 'https://th.wikipedia.org/wiki/สนามแม่เหล็กของโลก'], ['https://en.wikipedia.org/wiki/Refrigerator_magnet', 'https://en.wikipedia.org/wiki/Refrigerator_magnet'], ['https://en.wikipedia.org/wiki/Neodymium_magnet', 'https://en.wikipedia.org/wiki/Neodymium_magnet'], ['https://en.wikipedia.org/wiki/Magnetic_resonance_imaging', 'https://th.wikipedia.org/wiki/การสร้างภาพด้วยเรโซแนนซ์แม่เหล็ก'], ['https://doi.org/10.1088/0143-0807/18/4/012', 'https://doi.org/10.1088/0143-0807/18/4/012'], ['https://doi.org/10.1038/s41586-019-1293-1', 'https://doi.org/10.1038/s41586-019-1293-1'], ['https://en.wikipedia.org/wiki/Magnetar', 'https://th.wikipedia.org/wiki/แมกนีทาร์']];
+const LD = { mx: 0, hop: 0, t: 0 }, lv = Cv('ladCv', 720, 250), ladX = b => 40 + (Math.log10(b) + 12) / 23 * 640;
+const DOO = [
+  (c, t) => { c.fillStyle = C.pink; c.strokeStyle = C.ink; c.lineWidth = 3; c.beginPath(); c.ellipse(0, 0, 62, 46, 0, 0, TAU); c.fill(); c.stroke(); c.beginPath(); for (let i = -2; i <= 2; i++) { const k = Math.abs(i) * 8; c.moveTo(i * 22 - 8, -30 + k); c.bezierCurveTo(i * 22 + 12, -10, i * 22 - 14, 8, i * 22 + 6, 30 - k); } c.stroke(); c.strokeStyle = C.gold; c.lineWidth = 2.5; for (let k = 1; k <= 3; k++) { c.globalAlpha = .8 - k * .18; c.beginPath(); c.ellipse(0, 0, 62 + k * 15 + 3 * Math.sin(t * 3 + k), 46 + k * 13, 0, -2.4, -.75); c.stroke(); } c.globalAlpha = 1; },
+  (c) => { c.rotate(.19); c.strokeStyle = C.purple; c.lineWidth = 2.5; for (let k = 1; k <= 3; k++) for (const s of [-1, 1]) { c.beginPath(); c.ellipse(s * (22 + k * 22), 0, 22 + k * 22, 20 + k * 17, 0, 0, TAU); c.stroke(); } c.fillStyle = C.blue; c.strokeStyle = C.ink; c.lineWidth = 3; circ(c, 0, 0, 52); c.fill(); c.save(); c.clip(); c.fillStyle = C.green; [[-20, -18, 24, 18], [22, 12, 20, 26], [-30, 30, 16, 10]].forEach(e => { c.beginPath(); c.ellipse(e[0], e[1], e[2], e[3], .4, 0, TAU); c.fill(); }); c.restore(); circ(c, 0, 0, 52); c.stroke(); },
+  (c) => { c.fillStyle = '#e9eef8'; c.strokeStyle = C.ink; c.lineWidth = 3; rr(c, -44, -86, 88, 172, 10); c.fill(); c.stroke(); c.beginPath(); c.moveTo(-44, -30); c.lineTo(44, -30); c.stroke(); c.strokeStyle = '#7d879c'; c.lineWidth = 5; c.beginPath(); c.moveTo(30, -70); c.lineTo(30, -44); c.moveTo(30, -16); c.lineTo(30, 30); c.stroke(); c.save(); c.translate(-8, 22); c.rotate(-.08); c.fillStyle = C.gold; c.strokeStyle = C.ink; c.lineWidth = 2; c.fillRect(-22, -22, 44, 56); c.strokeRect(-22, -22, 44, 56); c.fillStyle = C.ink; for (let i = 0; i < 4; i++) c.fillRect(-15, -4 + i * 9, 30 - i * 5, 3); c.restore(); barMag(c, -8, 4, 0, 14, 6, false); },
+  (c, t) => { [18, -6].forEach(y => { c.fillStyle = '#8f9bb3'; c.strokeStyle = C.ink; c.lineWidth = 3; c.beginPath(); c.ellipse(0, y + 18, 58, 18, 0, 0, PI); c.lineTo(-58, y); c.ellipse(0, y, 58, 18, 0, PI, TAU); c.closePath(); c.fill(); c.stroke(); c.fillStyle = '#e4eaf6'; c.beginPath(); c.ellipse(0, y, 58, 18, 0, 0, TAU); c.fill(); c.stroke(); }); c.fillStyle = C.gold; [[-78, -40, 0], [74, -52, 1.3], [84, 20, 2.6]].forEach(s => { const r = 9 + 5 * Math.sin(t * 4 + s[2]); c.beginPath(); for (let i = 0; i < 8; i++) { const a = i * PI / 4, q = i % 2 ? r * .3 : r; c.lineTo(s[0] + Math.cos(a) * q, s[1] + Math.sin(a) * q); } c.fill(); }); },
+  (c) => { c.fillStyle = '#dfe6f3'; c.strokeStyle = C.ink; c.lineWidth = 3; rr(c, -30, -84, 150, 168, 36); c.fill(); c.stroke(); c.fillStyle = C.pit; circ(c, 46, 0, 44); c.fill(); c.stroke(); c.fillStyle = C.steel; rr(c, -140, 22, 200, 12, 5); c.fill(); c.stroke(); c.fillRect(-120, 34, 10, 50); c.fillStyle = C.blue; rr(c, -96, 4, 120, 18, 9); c.fill(); c.stroke(); c.fillStyle = '#ffd9b3'; circ(c, -112, 10, 13); c.fill(); c.stroke(); },
+  (c, t) => { const y = 7 * Math.sin(t * 2.2); c.strokeStyle = C.purple; c.lineWidth = 4; c.beginPath(); c.moveTo(-58, -90); c.lineTo(-58, 90); c.moveTo(58, -90); c.lineTo(58, 90); c.stroke(); c.fillStyle = 'rgba(182,103,255,.14)'; c.fillRect(-58, -90, 116, 180); c.fillStyle = '#39c94f'; c.strokeStyle = C.ink; c.lineWidth = 3; [[-30, 14], [30, 14]].forEach(l => { c.beginPath(); c.ellipse(l[0], y + l[1], 15, 8, l[0] < 0 ? -.5 : .5, 0, TAU); c.fill(); c.stroke(); }); c.beginPath(); c.ellipse(0, y, 34, 24, 0, 0, TAU); c.fill(); c.stroke(); [-15, 15].forEach(x => { c.fillStyle = '#39c94f'; circ(c, x, y - 22, 11); c.fill(); c.stroke(); c.fillStyle = C.ink; circ(c, x, y - 23, 6.5); c.fill(); c.fillStyle = '#000'; circ(c, x, y - 23, 3); c.fill(); }); c.strokeStyle = C.ink; c.lineWidth = 2.5; c.beginPath(); c.arc(0, y - 2, 16, .25, PI - .25); c.stroke(); },
+  (c) => { const g = c.createLinearGradient(-54, 0, 54, 0); g.addColorStop(0, '#7f8aa3'); g.addColorStop(.45, '#eef2fb'); g.addColorStop(1, '#6d7892'); c.fillStyle = g; c.strokeStyle = C.ink; c.lineWidth = 3; rr(c, -54, -70, 108, 140, 6); c.fill(); c.stroke(); [-82, 66].forEach(y => { rr(c, -66, y, 132, 16, 4); c.fill(); c.stroke(); }); c.fillStyle = C.pit; c.beginPath(); c.ellipse(0, -74, 24, 7, 0, 0, TAU); c.fill(); c.stroke(); c.strokeStyle = C.blue; c.lineWidth = 6; c.beginPath(); c.moveTo(-54, -30); c.lineTo(-100, -30); c.lineTo(-100, 80); c.stroke(); c.strokeStyle = C.red; c.beginPath(); c.moveTo(54, 30); c.lineTo(100, 30); c.lineTo(100, 80); c.stroke(); c.strokeStyle = C.gold; c.lineWidth = 3; for (let k = 0; k < 3; k++) { c.beginPath(); c.ellipse(0, -30 + k * 30, 54, 9, 0, 0, PI); c.stroke(); } },
+  (c, t) => { const p = 1 + .08 * Math.sin(t * 9); c.strokeStyle = C.purple; c.lineWidth = 2.5; for (let k = 1; k <= 4; k++) for (const s of [-1, 1]) { c.globalAlpha = 1 - k * .17; c.beginPath(); c.ellipse(s * (10 + k * 26), 0, 10 + k * 26, 12 + k * 18, 0, 0, TAU); c.stroke(); } c.globalAlpha = 1; c.strokeStyle = C.gold; c.lineWidth = 5; c.shadowColor = C.gold; c.shadowBlur = 16; c.beginPath(); c.moveTo(0, -96); c.lineTo(0, 96); c.stroke(); const g = c.createRadialGradient(0, 0, 4, 0, 0, 46 * p); g.addColorStop(0, '#ffffff'); g.addColorStop(.4, '#9fe3ff'); g.addColorStop(1, 'rgba(31,178,255,0)'); c.fillStyle = g; circ(c, 0, 0, 46 * p); c.fill(); c.shadowBlur = 0; c.fillStyle = '#fff'; circ(c, 0, 0, 17); c.fill(); }
+];
+function ladDraw() {
+  const c = lv.c, i = +$('lad').value, tx = ladX(LAD[i][0]); if (!LD.mx) LD.mx = tx;
+  c.fillStyle = C.pit; c.fillRect(0, 0, 720, 250);
+  c.save(); c.translate(360, 100 - 26 * Math.sin(clamp(LD.hop, 0, 1) * PI)); const s = 1 + .12 * Math.sin(clamp(LD.hop, 0, 1) * PI); c.scale(s, s); DOO[i](c, LD.t); c.restore();
+  c.strokeStyle = C.muted; c.lineWidth = 3; c.beginPath(); c.moveTo(40, 222); c.lineTo(680, 222); c.stroke(); c.lineWidth = 2;
+  for (let e = -12; e <= 11; e++) { const x = 40 + (e + 12) / 23 * 640; c.beginPath(); c.moveTo(x, 222); c.lineTo(x, e % 3 === 0 ? 206 : 213); c.stroke(); }
+  LAD.forEach((it, k) => { c.fillStyle = k === i ? C.gold : C.purple; c.strokeStyle = C.ink; c.lineWidth = 2; circ(c, ladX(it[0]), 222, k === i ? 10 : 6.5); c.fill(); c.stroke(); });
+  c.fillStyle = C.gold; c.beginPath(); c.moveTo(LD.mx, 208); c.lineTo(LD.mx - 11, 188); c.lineTo(LD.mx + 11, 188); c.fill();
+}
+function ladRead() {
+  const i = +$('lad').value, it = LAD[i], r = it[0] / .005, pw = String(+Math.log10(it[0]).toFixed(1)).replace('-', '−');
+  $('ladName').innerHTML = link(T(LADU[i][0], LADU[i][1]), T(it[2], it[3])); $('ladNum').textContent = it[1];
+  say('ladSay', T(it[4], it[5]));
+  say('ladMath', (Math.abs(r - 1) < 1e-9 ? T('1 fridge magnet. ', 'แม่เหล็กติดตู้เย็น 1 อัน ') : r > 1 ? T('= <b>' + words(r) + '</b> fridge magnets. ', '= แม่เหล็กติดตู้เย็น <b>' + words(r) + '</b> อัน ') : T('a fridge magnet is <b>' + words(1 / r) + '</b> times stronger. ', 'แม่เหล็กติดตู้เย็นแรงกว่า <b>' + words(1 / r) + '</b> เท่า ')) + T('Each tick on <a href="https://en.wikipedia.org/wiki/Orders_of_magnitude_(magnetic_field)" target="_blank" rel="noopener">the ruler</a> is ×10. This one sits at 10^' + pw + ' T.', 'ขีดหนึ่งบน<a href="https://en.wikipedia.org/wiki/Orders_of_magnitude_(magnetic_field)" target="_blank" rel="noopener">ไม้บรรทัด</a>คือ ×10 อันนี้อยู่ที่ 10^' + pw + ' T'));
+}
+lv.draw = () => { ladDraw(); ladRead(); };
+jobs.push(t => {
+  if (!lv.vis) return false; const i = +$('lad').value, tx = ladX(LAD[i][0]); let more = false;
+  if (Math.abs(LD.mx - tx) > .5) { LD.mx += (tx - LD.mx) * (MOTION ? .2 : 1); more = true; } else LD.mx = tx;
+  if (LD.hop > 0) { LD.hop -= .045; more = true; }
+  if (MOTION && (i === 0 || i === 3 || i === 5 || i === 7)) { LD.t = t / 1000; more = true; }
+  ladDraw(); return more;
+});
+function ladGo(i) { $('lad').value = clamp(i, 0, 7); LD.hop = MOTION ? 1 : 0; sweep(300 + 90 * +$('lad').value, 420 + 90 * +$('lad').value, 0, .07, 'square', .06); ladRead(); ladDraw(); wake(); }
+on('lad', 'input', () => ladGo(+$('lad').value));
+on('ladPrev', 'click', () => ladGo(+$('lad').value - 1)); on('ladNext', 'click', () => ladGo(+$('lad').value + 1));
+lv.cv.addEventListener('click', () => { LD.hop = MOTION ? 1 : 0; if (+$('lad').value === 5) sweep(180, 420, 0, .16, 'square', .1); else sweep(500, 900, 0, .08, 'sine', .08); wake(); });
+
+/* cards, windows, whoops */
+document.querySelectorAll('.card').forEach(b => {
+  const turn = () => { const f = b.classList.toggle('flip'); b.setAttribute('aria-pressed', f); b.querySelectorAll('a').forEach(a => a.tabIndex = f ? 0 : -1); sweep(f ? 400 : 700, f ? 700 : 400, 0, .09, 'triangle', .1); };
+  b.querySelectorAll('a').forEach(a => a.tabIndex = -1);
+  b.addEventListener('click', e => { if (!e.target.closest('a')) turn(); });
+  b.addEventListener('keydown', e => { if (e.target === b && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); turn(); } });
+});
+document.querySelectorAll('.window').forEach(w => { w.addEventListener('click', () => whoop(w)); w.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); whoop(w); } }); });
+['whoop1', 'whoop2', 'whoop3', 'h1'].forEach(id => on(id, 'click', e => whoop(e.currentTarget)));
+on('snd', 'click', () => { SOUND = !SOUND; $('snd').setAttribute('aria-pressed', SOUND); if (!SOUND) { if (SPK.on) bassOff(); } else whoopSound(); });
+
+function renderAll() { fieldSay(); renderShelf(); isRead(); renderChop(); distRead(); emRead(); farRead(); spkRead(); ladRead(); renderWhoops(); }
+function setLang(l) { L = l; rootEl.dataset.lang = l; document.documentElement.lang = l; $('lEn').setAttribute('aria-pressed', l === 'en'); $('lTh').setAttribute('aria-pressed', l === 'th'); try { localStorage.setItem('fm-lang', l); } catch (e) { } renderAll(); }
+on('lEn', 'click', () => setLang('en')); on('lTh', 'click', () => setLang('th'));
+function layout() { sprayFit(); skyBuild(); fieldLayout(); toys.forEach(o => { o.fit(); if (o.draw) o.draw(); }); wake(); }
+let rz = 0, lastW = innerWidth; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { if (innerWidth !== lastW || !SK.st || Math.abs(innerHeight - SK.h) > 120) { lastW = innerWidth; layout(); } }, 160); });
+RMQ.addEventListener('change', () => { MOTION = !RMQ.matches; layout(); });
+document.addEventListener('visibilitychange', () => { if (document.hidden && SPK.on) bassOff(); else wake(); });
+let l0 = 'en'; try { l0 = localStorage.getItem('fm-lang') || 'en'; } catch (e) { }
+fieldLayout(); setLang(l0 === 'th' ? 'th' : 'en'); layout();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { toys.forEach(o => o.draw && o.draw()); });
+})();
+</script>
