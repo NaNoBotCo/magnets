@@ -1,0 +1,19 @@
+# Fucking Magnets · แม่เหล็กแม่งเจ๋ง
+
+How magnets work, told with love for the Juggalo family. One page, eight toys for playing with the math, in English and Thai.
+
+- Grab 'em: two bar magnets to drag and flip; each pole pushes or pulls as strength ÷ distance².
+- The shelf: electrons loaded into five seats by Hund's rule, scandium to zinc; an iron atom has four unpaired.
+- The family: a two-dimensional Ising grid with a heat slider in iron's °C; order ends at 770°C.
+- The chop: a 5 cm bar cut in half 28 times, 2ⁿ pieces, a north and a south on each.
+- Back up: pull between two magnets falls as 1 ÷ d⁴, drawn against 1 ÷ d².
+- Wrap a nail: field = μ₀ × turns per meter × amps, about ×90 with an iron core, full near 2 tesla.
+- Shake it, and the speaker: volts = turns × rate of change of flux; the same coil and magnet run backwards.
+- The strong ladder: brain (10⁻¹² T) to magnetar (10¹¹ T) on a log ruler.
+
+Sources: Feynman, Fun to Imagine, BBC, 1983; Berry & Geim, Eur. J. Phys. 18, 307 (1997); Hahn et al., Nature 570, 496 (2019); Kittel, Introduction to Solid State Physics.
+
+Page: https://nanobotco.github.io/magnets/
+Repo: https://github.com/NaNoBotCo/magnets
+
+Text CC BY 4.0, code MIT.
